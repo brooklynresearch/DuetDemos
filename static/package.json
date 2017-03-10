@@ -19,6 +19,7 @@
     "events": "^1.1.0",
     "exports-loader": "^0.6.3",
     "file-loader": "^0.9.0",
+    "handlebars": "^4.0.6",
     "handlebars-loader": "^1.4.0",
     "jsmidgen": "^0.1.5",
     "midi-file-parser": "^1.0.0",
