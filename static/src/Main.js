@@ -22,6 +22,7 @@ import {Splash} from 'interface/Splash'
 import {About} from 'interface/About'
 import {Tutorial} from 'ai/Tutorial'
 import {FirstDemo} from 'demos/FirstDemo'
+import {BlankDemo} from 'demos/BlankDemo'
 import 'babel-polyfill'
 
 console.log("LOADING MAIN");
@@ -136,6 +137,11 @@ export class Controller {
                         this.glow.user()
                     })
                 })
+                break;
+
+            case '#blankdemo': // BLANK DEMO
+                const blankDemo = new BlankDemo(this.container);
+                this.addDefaultKeyboard()
                 break;
 
             default:
