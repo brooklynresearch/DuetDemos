@@ -21,8 +21,8 @@ import events from 'events'
 class AI extends events.EventEmitter{
 	constructor(){
 		super()
-    this.INTERRUPT = 3000 // Note Interrupt Timeout
-    this.WAIT = 600// Wait After Note Timeout
+		this.INTERRUPT = 30000 // Note Interrupt Timeout
+		this.WAIT = 600// Wait After Note Timeout
 
 		this._newTrack()
 
@@ -86,7 +86,7 @@ class AI extends events.EventEmitter{
 		delete this._heldNotes[note]
 		// send something if there are no events for a moment
 		if (Object.keys(this._heldNotes).length === 0){
-			if (this._lastPhrase !== -1 && Date.now() - this._lastPhrase > this.TIMEOUT){
+			if (this._lastPhrase !== -1 && Date.now() - this._lastPhrase > this.INTERRUPT){
 				//just send it
 				this.send()
 			} else {
