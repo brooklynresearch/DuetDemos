@@ -16,28 +16,17 @@
 	transition: opacity 0.3s;
 
 	.text {
+    color: blue;
 		position: absolute;
 		top: 0px;
 		left: 0px;
 		width: 100%;
 		height: 100%;
-		opacity: 0;
-		transition: opacity 0.3s;
 
-		&.visible {
-			opacity: 1;
-		}
-
-		&.user {
-			// color: $blue;
-		}
-
-		&.ai {
-			// color: $orange;
 		}
 	}
 
 	&.disappear {
 		opacity: 0;
 	}
-}
+

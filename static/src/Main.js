@@ -21,8 +21,150 @@ import {Glow} from 'interface/Glow'
 import {Splash} from 'interface/Splash'
 import {About} from 'interface/About'
 import {Tutorial} from 'ai/Tutorial'
+import {FirstDemo} from 'demos/FirstDemo'
 import 'babel-polyfill'
 
+console.log("LOADING MAIN");
+/* MAKE CONTROLLER CLASS TO HANDLE TEMLPLATE/CLASS SWAPPING */
+
+export class Controller {
+
+    constructor() {
+        this.route = window.location.hash;
+        this.keyboard;
+        this.container = document.createElement('div')
+        this.container.id = 'container'
+        document.body.appendChild(this.container)
+        this.glow = new Glow(this.container)
+        this.sound = new Sound()
+        this.sound.load()
+
+        ////// AI ///////////////////
+        this.ai = new AI()
+        this.ai.on('keyDown', (note, time) => {
+            this.sound.keyDown(note, time, true)
+            if (this.keyboard){
+                this.keyboard.keyDown(note, time, true)
+            }
+            this.glow.ai(time)
+        })
+
+        this.ai.on('keyUp', (note, time) => {
+            this.sound.keyUp(note, time, true)
+            if (this.keyboard){
+                this.keyboard.keyUp(note, time, true)
+            }
+            this.glow.ai(time)
+        })
+    }
+
+    start() {
+        ////////// SPLASH /////////
+        const about = new About(document.body)
+        const splash = new Splash(document.body)
+        splash.on('click', () => {
+            if (this.keyboard) {
+                this.keyboard.activate()
+            }
+            about.showButton()
+        })
+        splash.on('about', () => {
+            about.open(true)
+        })
+        about.on('close', () => {
+            if (!splash.loaded || splash.isOpen()){
+                splash.show()
+            } else {
+                if (this.keyboard) {
+                    this.keyboard.activate()
+                }
+            }
+        })
+        about.on('open', () => {
+            if (this.keyboard) {
+                this.keyboard.deactivate()
+            }
+            if (splash.isOpen()){
+                splash.hide()
+            }
+        })
+
+        switch(this.route){
+            case "#tutorial": // TUTORIAL
+                const tutorial = new Tutorial(this.container)
+                this.addDefaultKeyboard()
+                tutorial.start()
+
+                tutorial.on('keyDown', (note, time) => {
+                    this.sound.keyDown(note, time)
+                    this.keyboard.keyDown(note, time)
+                    this.glow.user()
+                })
+
+                tutorial.on('keyUp', (note, time) => {
+                    this.sound.keyUp(note, time)
+                    this.keyboard.keyUp(note, time)
+                    this.glow.user()
+                })
+
+                tutorial.on('aiKeyDown', (note, time) => {
+                    this.ai.keyDown(note, time)
+                })
+
+                tutorial.on('aiKeyUp', (note, time) => {
+                    this.ai.keyUp(note, time)
+                })
+                break;
+
+            case "#firstdemo": // FIRST DEMO
+                const firstDemo = new FirstDemo(this.container);
+                firstDemo.start()
+                this.keyboard = new Keyboard(this.container)
+                // Intercept regular note and make it all pentatonic-like
+                this.keyboard.on('keyDown', (note) => {
+                    firstDemo.makePenta(note, (newNote) => {
+                        console.log("NEWNOTE", newNote)
+                        this.sound.keyDown(newNote)
+                        this.ai.keyDown(newNote)
+                        this.glow.user()
+                    })
+                })
+                this.keyboard.on('keyUp', (note) => {
+                    firstDemo.makePenta(note, (newNote) => {
+                        this.sound.keyUp(newNote)
+                        this.ai.keyUp(newNote)
+                        this.glow.user()
+                    })
+                })
+                break;
+
+            default:
+                this.addDefaultKeyboard()
+                break;
+        }
+    }
+
+    addDefaultKeyboard() {
+        this.keyboard = new Keyboard(this.container)
+        this.keyboard.on('keyDown', (note) => {
+            this.sound.keyDown(note)
+            this.ai.keyDown(note)
+            this.glow.user()
+        })
+
+        this.keyboard.on('keyUp', (note) => {
+            this.sound.keyUp(note)
+            this.ai.keyUp(note)
+            this.glow.user()
+        })
+    }
+}
+
+var app = new Controller();
+app.start();
+
+////////////// OLD MAIN CODE ////////////////
+/*
 /////////////// SPLASH ///////////////////	
 
 const about = new About(document.body)
@@ -86,12 +228,11 @@ ai.on('keyDown', (note, time) => {
 
 ai.on('keyUp', (note, time) => {
 	sound.keyUp(note, time, true)
-	keyboard.keyUp(note, time, true)	
+	keyboard.keyUp(note, time, true)
 	glow.ai(time)
 })
 
 /////////////// TUTORIAL ///////////////////
-
 const tutorial = new Tutorial(container)
 
 tutorial.on('keyDown', (note, time) => {
@@ -113,3 +254,6 @@ tutorial.on('aiKeyDown', (note, time) => {
 tutorial.on('aiKeyUp', (note, time) => {
 	ai.keyUp(note, time)
 })
+/////////////// FIRSTDEMO ///////////////////
+const demo = new FirstDemo(container);
+*/

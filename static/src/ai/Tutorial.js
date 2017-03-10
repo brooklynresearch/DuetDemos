@@ -18,6 +18,7 @@ import events from 'events'
 import Tone from 'Tone/core/Tone'
 import 'style/tutorial.css'
 
+
 const beat = 0.4
 const testMelody = [
 	{
@@ -58,39 +59,34 @@ const testMelody = [
 ]
 
 export class Tutorial extends events.EventEmitter{
-	constructor(container){
-		super()
+    constructor(container){
+        super()
+        var tutorialTemplate = require("templates/tutorial.hbs");
 
-		this._tutorial = document.createElement('div')
-		this._tutorial.id = 'tutorial'
-		container.appendChild(this._tutorial)
-	}
-	start(){
-		if (window.localStorage){
-			if (window.localStorage.getItem('showedTutorial') === 'true' && window.location.hash !== '#tutorial'){
-				return 
-			} else {
-				window.localStorage.setItem('showedTutorial', 'true') 
-			}
-		}
+    }
+    start(){
+        this._tutorial = document.createElement('div')
+        this._tutorial.innerHTML = tutorialTemplate({title: "TUTORIAL"});
+        this._tutorial.id = 'tutorial'
+        container.appendChild(this._tutorial)
 
-		this._promiseTimeout(400).then(() => {
-			this._addText('When you play a few notes', 'user', 4200)
-			return this._promiseTimeout(1000)
-		}).then(() => {
-			const now = Tone.now()
-			testMelody.forEach((event) => {
-				this.emit('keyDown', event.note, event.time + now)
-				this.emit('keyUp', event.note, event.time + event.duration * 0.9 + now)
-			})
-			return this._promiseTimeout(3000)
-		}).then(() => {
-			this._sendUserMelody()
-			return this._promiseTimeout(500)
-		}).then(() => {
-			this._addText('the computer will respond to what you play', 'ai', 5000)
-		})
-	}
+        this._promiseTimeout(400).then(() => {
+            //this._addText('When you play a few notes', 'user', 4200)
+            return this._promiseTimeout(1000)
+        }).then(() => {
+            const now = Tone.now()
+            testMelody.forEach((event) => {
+                this.emit('keyDown', event.note, event.time + now)
+                this.emit('keyUp', event.note, event.time + event.duration * 0.9 + now)
+            })
+            return this._promiseTimeout(3000)
+        }).then(() => {
+            this._sendUserMelody()
+            return this._promiseTimeout(500)
+        }).then(() => {
+            //this._addText('the computer will respond to what you play', 'ai', 5000)
+        })
+    }
 	_promiseTimeout(time){
 		return new Promise(done => {
 			setTimeout(done, time)
