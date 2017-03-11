@@ -17,6 +17,10 @@
 import events from 'events'
 import Tone from 'Tone/core/Tone'
 import 'style/tutorial.css'
+import {Keyboard} from 'keyboard/Keyboard'
+import {AI} from 'ai/AI'
+import {Sound} from 'sound/Sound'
+import {Glow} from 'interface/Glow'
 
 
 const beat = 0.4
@@ -62,13 +66,38 @@ export class Tutorial extends events.EventEmitter{
     constructor(container){
         super()
         var tutorialTemplate = require("templates/tutorial.hbs");
-
-    }
-    start(){
         this._tutorial = document.createElement('div')
         this._tutorial.innerHTML = tutorialTemplate({title: "TUTORIAL"});
         this._tutorial.id = 'tutorial'
         container.appendChild(this._tutorial)
+
+        this.keyboard = new Keyboard(container)
+        this.glow = new Glow(container)
+        this.sound = new Sound()
+        this.sound.load()
+        this.ai = new AI()
+    }
+    start(){
+        this.on('keyDown', (note, time) => {
+            this.sound.keyDown(note, time)
+            this.keyboard.keyDown(note, time)
+            this.glow.user()
+        })
+
+        this.on('keyUp', (note, time) => {
+            this.sound.keyUp(note, time)
+            this.keyboard.keyUp(note, time)
+            this.glow.user()
+        })
+
+        this.on('aiKeyDown', (note, time) => {
+            this.ai.keyDown(note, time)
+        })
+
+        this.on('aiKeyUp', (note, time) => {
+            this.ai.keyUp(note, time)
+        })
+
 
         this._promiseTimeout(400).then(() => {
             //this._addText('When you play a few notes', 'user', 4200)
