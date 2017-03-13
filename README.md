@@ -3,7 +3,7 @@ Demonstrations of explored AI musical concepts using Magenta/Tensorflow that dra
 
 ## General Dev Stuff
 + If you need to install a new node package for the frontend, make sure to use the --save flag so it gets added
-to the package.js file for the rest of the team
+to the package.js file for the rest of the team.
     - `npm install { some package } --save`
 
 + When you make changes to the frontend, Webpack will need to compile everything again.
@@ -36,13 +36,24 @@ betterFunction(param, (result) => {
 + src/templates/blankdemo.hbs
 + src/Main.js
 
-+ You can see this demo in the browser at [localhost:8080/#blankdemo]
++ You can see this demo in the browser at [localhost:8080/].
 
 ### Steps to make a New Demo
 + Create new js file with demo name in static/src/demos
     - Ex: `static/src/demos/BlankDemo.js`
 
-+ The js file needs to export a class and define a constructor for it
+This file needs import statements for all of the classes it uses. To implement the
+standart duet demo these are:
+```javascript
+import events from 'events'
+import Tone from 'Tone/core/Tone'
+import {Keyboard} from 'keyboard/Keyboard'
+import {AI} from 'ai/AI'
+import {Sound} from 'sound/Sound'
+import {Glow} from 'interface/Glow'
+```
+
++ The js file needs to export a class with a constructor
 
 + If the new demo needs to change the default appearance, also create a
 handlebars template file in static/src/templates
@@ -66,35 +77,69 @@ function to pass data to the template and add it to the page
 // Also I kept the id 'tutorial' so it would use those CSS rules
 ```
 
-+ App 'routes' are accessed using "/#{route name}"
++ The demo class should also define a `start()` function that will start listeners
+for key press and release and send note data to the Sound and AI objects.
+In `demo/BlankDemo.js`:
+```javascript
+     start() {
+        this.keyboard.activate()
+        // Start listening
+        this.keyboard.on('keyDown', (note) => {
+            this.sound.keyDown(note)
+            this.ai.keyDown(note)
+            this.glow.user()
+        })
+
+        this.keyboard.on('keyUp', (note) => {
+            this.sound.keyUp(note)
+            this.ai.keyUp(note)
+            this.glow.user()
+        })
+
+        this.ai.on('keyDown', (note, time) => {
+            this.sound.keyDown(note, time, true)
+            this.keyboard.keyDown(note, time, true)
+            this.glow.ai(time)
+        })
+
+        this.ai.on('keyUp', (note, time) => {
+            this.sound.keyUp(note, time, true)
+            this.keyboard.keyUp(note, time, true)
+            this.glow.ai(time)
+        })
+    }
+// The Glow object is the background color that changes to yellow when the AI
+// is playing
+```
+
++ App 'routes' are accessed in the browser using "/#{route name}".
     - Ex: `localhost:8080/#blankdemo`
 
-+ The new demo class need to be imported in Main.js so we can call its constructor
-and any methods from the Controller
++ The new demo class needs to be imported in Main.js so we can call its constructor
+and any methods from the Controller.
     - Ex: `import {BlankDemo} from 'demos/BlankDemo'`
 
 + In the Controller class in Main.js, there needs to be a check for the new
-demo's route in the Controller's start function, which is called on every page load
+demo's route in the Controller's start function, which is called on every page load.
 In `Main.js`
 ```javascript
         switch(this.route) {
-            // ...
-            case '#blankdemo': // BLANK DEMO
-                const secondDemo = new BlankDemo(this.container);
-                this.addDefaultKeyboard()
+            case "#tutorial": // TUTORIAL
+                const tutorial = new Tutorial(this.container)
+                tutorial.start()
                 break;
+
+            case "#firstdemo": // FIRST DEMO
+                const firstDemo = new FirstDemo(this.container)
+                firstDemo.start()
+               break;
 
             default:
-                this.addDefaultKeyboard()
+                const blankDemo = new BlankDemo(this.container)
+                blankDemo.start()
                 break;
-
-            //...
         }
 ```
 
-+ The original app was implemented using keyDown and keyUp listeners in
-Main.js. I have kept it this way for the pentatonic demo but maybe we can decouple
-things more so there is less need to change Main.js for every demo
-
-+ Ideally, the Controller would only need to instantiate the right demo class and
-call a start method
++ Ideally, the Controller will only need to instantiate a demo class and
+call its start method.
