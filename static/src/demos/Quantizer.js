@@ -17,10 +17,31 @@ export class Quantizer {
         this.sound = new Sound()
         this.sound.load()
         this.glow = new Glow(container)
+
+        this.kickSampler = new Tone.Sampler('audio/drums/Kick02.mp3', () => {
+            console.log ("LOADED KICK");
+            this.kickSampler.volume.value = 2;
+        }).toMaster();
+
+        this.snareSampler = new Tone.Sampler('audio/drums/Snare05.mp3', () => {
+            console.log("LOADED SNARE");
+            this.snareSampler.volume.value = 2;
+        }).toMaster();
+
+        this.beat = new Tone.Sequence((time, count) => {
+            if (count === 0) {
+                console.log("KICK");
+                this.kickSampler.triggerAttackRelease(0, '8n');
+            } else if (count === 2) {
+                console.log("SNARE");
+                this.snareSampler.triggerAttackRelease(0, '8n');
+            }
+        }, [0,1,2,3], '8n')
     }
 
     start() {
         Tone.Transport.start()
+        this.beat.start('1m')
         this.keyboard.activate()
         // Start listening
         this.keyboard.on('keyDown', (note) => {
