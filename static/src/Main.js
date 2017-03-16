@@ -17,12 +17,13 @@
 import {Tutorial} from 'ai/Tutorial'
 import {FirstDemo} from 'demos/FirstDemo'
 import {BlankDemo} from 'demos/BlankDemo'
+import {Arpeggiator} from 'demos/Arpeggiator'
 import 'babel-polyfill'
 
 export class Controller {
 
     constructor() {
-        console.log("LOADING MAIN");
+        console.log("LOADING CONTROLLER");
         this.route = window.location.hash;
         this.container = document.createElement('div')
         this.container.id = 'container'
@@ -39,6 +40,11 @@ export class Controller {
             case "#firstdemo": // FIRST DEMO
                 const firstDemo = new FirstDemo(this.container)
                 firstDemo.start()
+               break;
+
+            case "#arpeggiator": // FIRST DEMO
+                const arpeggiator = new Arpeggiator(this.container)
+                arpeggiator.start()
                break;
 
             default:
