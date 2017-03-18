@@ -18,6 +18,7 @@ import {Tutorial} from 'ai/Tutorial'
 import {FirstDemo} from 'demos/FirstDemo'
 import {BlankDemo} from 'demos/BlankDemo'
 import {Arpeggiator} from 'demos/Arpeggiator'
+import {Quantizer} from 'demos/Quantizer'
 import 'babel-polyfill'
 
 export class Controller {
@@ -37,15 +38,20 @@ export class Controller {
                 tutorial.start()
                 break;
 
-            case "#firstdemo": // FIRST DEMO
+            case "#firstdemo": // PENTATONIC
                 const firstDemo = new FirstDemo(this.container)
                 firstDemo.start()
-               break;
+                break;
 
-            case "#arpeggiator": // FIRST DEMO
+            case "#arpeggiator": // ARPEGGIATOR
                 const arpeggiator = new Arpeggiator(this.container)
                 arpeggiator.start()
-               break;
+                break;
+
+            case "#quantizer": // QUANTIZER
+                const quantizer = new Quantizer(this.container)
+                quantizer.start()
+                break
 
             default:
                 const blankDemo = new BlankDemo(this.container)
