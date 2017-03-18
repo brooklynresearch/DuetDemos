@@ -17,13 +17,14 @@
 import {Tutorial} from 'ai/Tutorial'
 import {FirstDemo} from 'demos/FirstDemo'
 import {BlankDemo} from 'demos/BlankDemo'
+import {Arpeggiator} from 'demos/Arpeggiator'
 import {Quantizer} from 'demos/Quantizer'
 import 'babel-polyfill'
 
 export class Controller {
 
     constructor() {
-        console.log("LOADING MAIN");
+        console.log("LOADING CONTROLLER");
         this.route = window.location.hash;
         this.container = document.createElement('div')
         this.container.id = 'container'
@@ -37,12 +38,17 @@ export class Controller {
                 tutorial.start()
                 break;
 
-            case "#firstdemo": // FIRST DEMO
+            case "#firstdemo": // PENTATONIC
                 const firstDemo = new FirstDemo(this.container)
                 firstDemo.start()
-               break;
+                break;
 
-            case "#quantizer":
+            case "#arpeggiator": // ARPEGGIATOR
+                const arpeggiator = new Arpeggiator(this.container)
+                arpeggiator.start()
+                break;
+
+            case "#quantizer": // QUANTIZER
                 const quantizer = new Quantizer(this.container)
                 quantizer.start()
                 break

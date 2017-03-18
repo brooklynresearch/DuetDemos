@@ -30,10 +30,10 @@ export class Quantizer {
 
         this.beat = new Tone.Sequence((time, count) => {
             if (count === 0) {
-                console.log("KICK");
+                //console.log("KICK");
                 this.kickSampler.triggerAttackRelease(0, '8n');
             } else if (count === 2) {
-                console.log("SNARE");
+                //console.log("SNARE");
                 this.snareSampler.triggerAttackRelease(0, '8n');
             }
         }, [0,1,2,3], '8n')
@@ -46,7 +46,7 @@ export class Quantizer {
         // Start listening
         this.keyboard.on('keyDown', (note) => {
             // Schedule input for the next 8th note
-            var t = Tone.Time('@8n').eval()
+            var t = Tone.Time(Tone.now()).quantize('@8n',0.2).eval()
             //Tone.Transport.schedule((t) => {
                 this.sound.keyDown(note, t)
                 this.ai.keyDown(note, t)
@@ -56,18 +56,18 @@ export class Quantizer {
 
         this.keyboard.on('keyUp', (note) => {
             // Schedule input for the next 8th note
-            var t = Tone.Time('@8n').eval()
+            var t = Tone.Time(Tone.now()).quantize('@8n', 0.2).eval()
             //Tone.Transport.schedule((t) => {
-                this.sound.keyUp(note, t)
-                this.ai.keyUp(note, t)
+                this.sound.keyUp(note)
+                this.ai.keyUp(note)
                 this.glow.user()
             //}, '@8n')
         })
 
         this.ai.on('keyDown', (note, time) => {
             // Schedule output for the next 8th note
+            var t = Tone.Time(time).quantize('@8n', 0.2).eval()
             //Tone.Transport.schedule((t) => {
-            var t = Tone.Time('@8n').eval()
                 this.sound.keyDown(note, t, true)
                 this.keyboard.keyDown(note, t, true)
                 this.glow.ai(time)
@@ -76,8 +76,9 @@ export class Quantizer {
 
         this.ai.on('keyUp', (note, time) => {
             // Schedule output for the next 8th note
-            var t = Tone.Time('@8n').eval()
+            //var t = Tone.now().quantize('@8n', 0.5).eval()
             //Tone.Transport.schedule((t) => {
+            var t = Tone.Time(time).quantize('@8n', 0.2).eval()
                 this.sound.keyUp(note, t, true)
                 this.keyboard.keyUp(note, t, true)
                 this.glow.ai(time)
