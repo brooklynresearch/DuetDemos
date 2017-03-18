@@ -1,6 +1,28 @@
 # DuetDemos
 Demonstrations of explored AI musical concepts using Magenta/Tensorflow that draws from the AI Duet experiment
 
+## Demo Status (Friday 3/17)
++ I just merged the Quantizer and Arpeggiator demos into master so everyone can try them out.
+
++ Pentatonic (still called 'firstdemo', need to change) and Arpeggiator demos are functioning.
+
++ Might be nice for those two to have something in the interface to change scales. Maybe just major/minor to keep it simple.
+
++ There is an example here of how the Arpeggiator could work with a grid-based UI for selecting the note-pattern:
+    - [https://github.com/Tonejs/Tone.js/blob/master/examples/stepSequencer.html]
+
++ Quantizer Demo is nearly there, I think? It **is** quantizing, but it always delays notes, even if you're playing along with the beat.
+So if you match the drum track, the output will be on the off beats or the up beats or whatever.
+If anyone wants to work on this here are the resources I've been basing things on so far:
+    - [https://tonejs.github.io/docs/#Time]
+    - [https://github.com/Tonejs/Tone.js/blob/master/examples/quantization.html]
+
++ One thought I had was that quantizing may work better if we try using Tone's own sampler instead of the one included with the ai demo.
+    - [https://tonejs.github.io/docs/#Sampler]
+
++ If anyone wants to try using custom samples instead of the included piano sounds, there are tons of royalty-free ones here:
+    - [http://www.musicradar.com/news/tech/free-music-samples-download-loops-hits-and-multis-627820]
+
 ## General Dev Stuff
 + If you need to install a new node package for the frontend, make sure to use the --save flag so it gets added
 to the package.js file for the rest of the team.
