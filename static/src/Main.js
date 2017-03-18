@@ -17,6 +17,7 @@
 import {Tutorial} from 'ai/Tutorial'
 import {FirstDemo} from 'demos/FirstDemo'
 import {BlankDemo} from 'demos/BlankDemo'
+import {Quantizer} from 'demos/Quantizer'
 import 'babel-polyfill'
 
 export class Controller {
@@ -40,6 +41,11 @@ export class Controller {
                 const firstDemo = new FirstDemo(this.container)
                 firstDemo.start()
                break;
+
+            case "#quantizer":
+                const quantizer = new Quantizer(this.container)
+                quantizer.start()
+                break
 
             default:
                 const blankDemo = new BlankDemo(this.container)
