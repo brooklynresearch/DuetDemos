@@ -46,38 +46,42 @@ export class Quantizer {
         // Start listening
         this.keyboard.on('keyDown', (note) => {
             // Schedule input for the next 8th note
-            Tone.Transport.schedule((t) => {
-                this.sound.keyDown(note)
-                this.ai.keyDown(note)
+            var t = Tone.Time('@8n').eval()
+            //Tone.Transport.schedule((t) => {
+                this.sound.keyDown(note, t)
+                this.ai.keyDown(note, t)
                 this.glow.user()
-            }, '@8n')
+            //}, t)
         })
 
         this.keyboard.on('keyUp', (note) => {
             // Schedule input for the next 8th note
-            Tone.Transport.schedule((t) => {
-                this.sound.keyUp(note)
-                this.ai.keyUp(note)
+            var t = Tone.Time('@8n').eval()
+            //Tone.Transport.schedule((t) => {
+                this.sound.keyUp(note, t)
+                this.ai.keyUp(note, t)
                 this.glow.user()
-            }, '@8n')
+            //}, '@8n')
         })
 
         this.ai.on('keyDown', (note, time) => {
             // Schedule output for the next 8th note
-            Tone.Transport.schedule((t) => {
-                this.sound.keyDown(note, time, true)
-                this.keyboard.keyDown(note, time, true)
+            //Tone.Transport.schedule((t) => {
+            var t = Tone.Time('@8n').eval()
+                this.sound.keyDown(note, t, true)
+                this.keyboard.keyDown(note, t, true)
                 this.glow.ai(time)
-            }, '@8n')
+            //}, '@8n')
         })
 
         this.ai.on('keyUp', (note, time) => {
             // Schedule output for the next 8th note
-            Tone.Transport.schedule((t) => {
-                this.sound.keyUp(note, time, true)
-                this.keyboard.keyUp(note, time, true)
+            var t = Tone.Time('@8n').eval()
+            //Tone.Transport.schedule((t) => {
+                this.sound.keyUp(note, t, true)
+                this.keyboard.keyUp(note, t, true)
                 this.glow.ai(time)
-            }, '@8n')
+            //}, '@8n')
         })
     }
 }
