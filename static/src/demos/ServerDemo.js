@@ -3,21 +3,20 @@ import {AI} from 'ai/TalkTalk'
 import {Sound} from 'sound/Sound'
 import {Glow} from 'interface/Glow'
 
-
 export class ServerDemo {
     constructor(container) {
         console.log("in serverdemo");
-        var demoTemplate = require("templates/blankdemo.hbs");
-        this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Server Demo: A Demo of a Demo"});
-        this.element.id = 'tutorial'
-        container.appendChild(this.element)
-
         this.ai = new AI()
         this.keyboard = new Keyboard(container)
         this.sound = new Sound()
         this.sound.load()
         this.glow = new Glow(container)
+
+        var demoTemplate = require("templates/blankdemo.hbs");
+        this.element = document.createElement('div')
+        this.element.innerHTML = demoTemplate({title: "Server Demo: A Demo of a Demo"});
+        this.element.id = 'tutorial'
+        container.appendChild(this.element)
     }
 
     start() {

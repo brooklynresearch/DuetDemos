@@ -5,14 +5,9 @@ import {AI} from 'ai/AI'
 import {Sound} from 'sound/Sound'
 import {Glow} from 'interface/Glow'
 
-export class FirstDemo extends events.EventEmitter{
+export class Pentatonic extends events.EventEmitter{
     constructor(container){
         super()
-        var demoTemplate = require("templates/firstdemo.hbs");
-        this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "DEMO #1: PentaChronic"});
-        this.element.id = 'tutorial'
-        container.appendChild(this.element)
 
         this.ai = new AI()
         this.keyboard = new Keyboard(container)
@@ -20,6 +15,11 @@ export class FirstDemo extends events.EventEmitter{
         this.sound.load()
         this.glow = new Glow(container)
 
+        var demoTemplate = require("templates/pentatonic.hbs");
+        this.element = document.createElement('div')
+        this.element.innerHTML = demoTemplate({title: "Pentatonic"});
+        this.element.id = 'tutorial'
+        container.appendChild(this.element)
 
         this.pentaNotes = [0,12,24,36,48,60,72,84,96,108,120,    // C
                            2,14,26,38,50,62,74,86,98,110,122,    // D
@@ -33,7 +33,7 @@ export class FirstDemo extends events.EventEmitter{
         // Intercept regular note and make it all pentatonic-like
         this.keyboard.on('keyDown', (note) => {
             this.makePenta(note, (newNote) => {
-                console.log("NEWNOTE", newNote)
+                //console.log("NEWNOTE", newNote)
                 this.sound.keyDown(newNote)
                 this.ai.keyDown(newNote)
                 this.glow.user()
@@ -69,13 +69,13 @@ export class FirstDemo extends events.EventEmitter{
                     closest = pNote
                 }
                 if (i === this.pentaNotes.length-1) {
-                    console.log("NEW NOTE", closest)
+                    //console.log("NEW NOTE", closest)
                     callback(closest)
                 }
                 i++;
             })
         } else {
-            console.log("SAME NOTE", note)
+            //console.log("SAME NOTE", note)
             callback(note)
         }
     }

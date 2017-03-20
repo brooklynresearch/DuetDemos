@@ -6,17 +6,17 @@ import Tone from 'tone'
 
 export class Quantizer {
     constructor(container) {
-        var demoTemplate = require("templates/quantizer.hbs");
-        this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Quantizer"});
-        this.element.id = 'tutorial'
-        container.appendChild(this.element)
-
         this.ai = new AI()
         this.keyboard = new Keyboard(container)
         this.sound = new Sound()
         this.sound.load()
         this.glow = new Glow(container)
+
+        var demoTemplate = require("templates/quantizer.hbs");
+        this.element = document.createElement('div')
+        this.element.innerHTML = demoTemplate({title: "Quantizer"});
+        this.element.id = 'tutorial'
+        container.appendChild(this.element)
 
         this.kickSampler = new Tone.Sampler('audio/drums/Kick02.mp3', () => {
             console.log ("LOADED KICK");
