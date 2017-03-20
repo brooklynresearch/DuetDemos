@@ -46,7 +46,7 @@ def model():
     print("in model")
     print(model)
     if model:
-        # reset_generator(model)
+        reset_generator(model)
         print 'Reset generator to', model
     print(json.dumps({'status':'OK','user':model}))
     return json.dumps({'status':'OK','user':model});

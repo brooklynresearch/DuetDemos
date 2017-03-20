@@ -58,18 +58,6 @@ class AI extends events.EventEmitter{
 			let actions = []
 			request.load(`./predict?duration=${endTime + additional}`, JSON.stringify(request.toArray()), 'POST').then((response) => {
 				response.slice(endTime / 2).tracks[1].notes.forEach((note) => {
-					// actions.push({
-		   //  		    curr_time: note.noteOn,
-		   //              action: 'keyDown',
-		   //              note: note
-		   //          })
-		   //          note.duration = note.duration * 0.9
-		   //          note.duration = Math.min(note.duration, 4)
-		   //          actions.push({
-		   //              curr_time: note.noteOff,
-		   //              action: 'keyUp',
-		   //              note: note
-		   //          })
 
 		            const now = Tone.now() + 0.05
 					if (note.noteOn + now > this._aiEndTime){
@@ -83,11 +71,8 @@ class AI extends events.EventEmitter{
 				})
 			})
 
-			// for (let action of actions) {
-	  //           const now = Tone.now() + 0.05
-	  //           this.emit(action.action, action.note.midi, action.curr_time + now)
-			// }
 
+			// this switches the model
 			fetch('/model', {
 			  method: 'POST',
 			  headers: {
