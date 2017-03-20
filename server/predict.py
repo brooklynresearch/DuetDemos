@@ -129,6 +129,10 @@ def generate_midi(midi_data, total_seconds=10):
         primer_sequence, generator_options)
     output = tempfile.NamedTemporaryFile()
     magenta.music.midi_io.sequence_proto_to_midi_file(generated_sequence, output.name)
+    print 'Generated sequene is'
+    for note in generated_sequence.notes:
+      print 'Note %i %4.4f %4.4f' % (note.pitch, note.start_time, note.end_time)
+    print 'With tempo', qpm
     output.seek(0)
     print(time.time())
     return output
