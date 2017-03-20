@@ -15,7 +15,7 @@
  */
 
 import {Tutorial} from 'ai/Tutorial'
-import {FirstDemo} from 'demos/FirstDemo'
+import {Pentatonic} from 'demos/Pentatonic'
 import {BlankDemo} from 'demos/BlankDemo'
 import {Arpeggiator} from 'demos/Arpeggiator'
 import {Quantizer} from 'demos/Quantizer'
@@ -30,6 +30,13 @@ export class Controller {
         this.container = document.createElement('div')
         this.container.id = 'container'
         document.body.appendChild(this.container)
+
+        setInterval(function() { // THERE MUST BE A BETTER WAY
+            var elem = document.getElementById("change-model")
+            if (elem) {
+                elem.addEventListener("change", Controller.changeModel)
+            }
+        }, 500)
     }
 
     start() {
@@ -39,9 +46,9 @@ export class Controller {
                 tutorial.start()
                 break;
 
-            case "#firstdemo": // PENTATONIC
-                const firstDemo = new FirstDemo(this.container)
-                firstDemo.start()
+            case "#pentatonic": // PENTATONIC
+                const pentatonic = new Pentatonic(this.container)
+                pentatonic.start()
                 break;
 
             case "#arpeggiator": // ARPEGGIATOR
@@ -64,6 +71,31 @@ export class Controller {
                 blankDemo.start()
                 break;
         }
+    }
+
+    static changeModel(event) {
+
+        this.models = {
+            'melodic': 'attention_rnn',
+            'polyphonic': 'polyphony_rnn'
+        }
+
+        console.log("CALLING changemodel")
+            fetch('/model', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                model: this.models[event.target.value]
+              })
+            })
+            .then(function(res){ 
+                console.log(res);
+            })
+            .catch(function(error){
+                console.log('Request failed', error)
+            })
     }
 }
 var app = new Controller();

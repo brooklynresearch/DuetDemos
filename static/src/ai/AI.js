@@ -72,7 +72,7 @@ class AI extends events.EventEmitter{
 	}
 
 	keyDown(note, time=Tone.now()){
-    console.log("AI KEY DOWN", note)
+    //console.log("AI KEY DOWN", note)
 		if (this._track.length === 0 && this._lastPhrase === -1){
 			this._lastPhrase = Date.now()
 		}

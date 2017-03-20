@@ -65,18 +65,19 @@ const testMelody = [
 export class Tutorial extends events.EventEmitter{
     constructor(container){
         super()
-        var tutorialTemplate = require("templates/tutorial.hbs");
-        this._tutorial = document.createElement('div')
-        this._tutorial.innerHTML = tutorialTemplate({title: "TUTORIAL"});
-        this._tutorial.id = 'tutorial'
-        container.appendChild(this._tutorial)
-
         this.keyboard = new Keyboard(container)
         this.glow = new Glow(container)
         this.sound = new Sound()
         this.sound.load()
         this.ai = new AI()
+
+        var tutorialTemplate = require("templates/tutorial.hbs");
+        this._tutorial = document.createElement('div')
+        this._tutorial.innerHTML = tutorialTemplate({title: "TUTORIAL"});
+        this._tutorial.id = 'tutorial'
+        container.appendChild(this._tutorial)
     }
+
     start(){
         this.on('keyDown', (note, time) => {
             this.sound.keyDown(note, time)

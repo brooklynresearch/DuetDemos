@@ -8,17 +8,17 @@ import Tone from 'Tone/core/Tone'
 export class Arpeggiator extends events.EventEmitter{
     constructor(container) {
         super()
-        var demoTemplate = require("templates/arpeggiator.hbs");
-        this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Arpeggiator"});
-        this.element.id = 'tutorial'
-        container.appendChild(this.element)
-
         this.ai = new AI()
         this.keyboard = new Keyboard(container)
         this.sound = new Sound()
         this.sound.load()
         this.glow = new Glow(container)
+
+        var demoTemplate = require("templates/arpeggiator.hbs");
+        this.element = document.createElement('div')
+        this.element.innerHTML = demoTemplate({title: "Arpeggiator"});
+        this.element.id = 'tutorial'
+        container.appendChild(this.element)
     }
 
     start() {

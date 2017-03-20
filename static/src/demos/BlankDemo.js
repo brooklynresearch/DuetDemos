@@ -6,17 +6,17 @@ import {Glow} from 'interface/Glow'
 
 export class BlankDemo {
     constructor(container) {
-        var demoTemplate = require("templates/blankdemo.hbs");
-        this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Blank Demo: A Demo of a Demo"});
-        this.element.id = 'tutorial'
-        container.appendChild(this.element)
-
         this.ai = new AI()
         this.keyboard = new Keyboard(container)
         this.sound = new Sound()
         this.sound.load()
         this.glow = new Glow(container)
+
+        var demoTemplate = require("templates/blankdemo.hbs");
+        this.element = document.createElement('div')
+        this.element.innerHTML = demoTemplate({title: "Default Demo"});
+        this.element.id = 'tutorial'
+        container.appendChild(this.element)
     }
 
     start() {
