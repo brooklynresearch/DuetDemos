@@ -34,6 +34,7 @@
     "url-loader": "^0.5.7",
     "webmidi": "^2.0.0-beta.1",
     "webpack": "^1.12.14",
+    "whatwg-fetch": "^2.0.3",
     "youtube-iframe": "^1.0.3"
   }
 }

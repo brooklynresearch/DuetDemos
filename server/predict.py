@@ -20,6 +20,9 @@ import magenta
 from magenta.models.melody_rnn import melody_rnn_config_flags
 from magenta.models.melody_rnn import melody_rnn_model
 from magenta.models.melody_rnn import melody_rnn_sequence_generator
+from magenta.models.polyphony_rnn import polyphony_model
+from magenta.models.polyphony_rnn import polyphony_sequence_generator
+
 from magenta.protobuf import generator_pb2
 from magenta.protobuf import music_pb2
 
@@ -30,10 +33,45 @@ import tempfile
 import pretty_midi
 
 BUNDLE_NAME = 'attention_rnn'
+GRUNDLE_NAME = 'grundle_rnn'
+DEFAULT_GENERATOR = 'polyphony_rnn'
+
+
+polyphony_model.default_configs['polyphony_rnn'] = (
+    polyphony_model.default_configs['polyphony'])
+configs = magenta.models.melody_rnn.melody_rnn_model.default_configs
+configs.update(polyphony_model.default_configs)
+print 'Loading bundle', DEFAULT_GENERATOR
 
 config = magenta.models.melody_rnn.melody_rnn_model.default_configs[BUNDLE_NAME]
 bundle_file = magenta.music.read_bundle_file(os.path.abspath(BUNDLE_NAME+'.mag'))
 steps_per_quarter = 4
+
+class GlobalGenerator:
+  def __init__(self):
+    self.reset_generator(DEFAULT_GENERATOR)
+
+  def reset_generator(self, generator_name):
+    config  = configs[generator_name]
+    bundle_file = magenta.music.read_bundle_file(
+        os.path.abspath(generator_name + '.mag'))
+
+    if generator_name == 'polyphony_rnn':
+      self.generator = (
+          polyphony_sequence_generator.PolyphonyRnnSequenceGenerator(
+              model=polyphony_model.PolyphonyRnnModel(config),
+              details=config.details,
+              steps_per_quarter=steps_per_quarter,
+              bundle=bundle_file))
+    else:
+      self.generator = melody_rnn_sequence_generator.MelodyRnnSequenceGenerator(
+          model=melody_rnn_model.MelodyRnnModel(config),
+          details=config.details,
+          steps_per_quarter=steps_per_quarter,
+          bundle=bundle_file)
+
+
+GLOBAL_GENERATOR = GlobalGenerator()
 
 generator = melody_rnn_sequence_generator.MelodyRnnSequenceGenerator(
       model=melody_rnn_model.MelodyRnnModel(config),
@@ -41,8 +79,22 @@ generator = melody_rnn_sequence_generator.MelodyRnnSequenceGenerator(
       steps_per_quarter=steps_per_quarter,
       bundle=bundle_file)
 
+def switch_bundle(bundle_name):
+    global GRUNDLE_NAME
+    print("switch_bundle before")
+    print(bundle_name)
+    print(GRUNDLE_NAME)
+    GRUNDLE_NAME = bundle_name
+    print("switch_bundle after")
+    print(GRUNDLE_NAME)
+    return GRUNDLE_NAME
+
 def _steps_to_seconds(steps, qpm):
     return steps * 60.0 / qpm / steps_per_quarter
+
+def reset_generator(generator_name):
+  GLOBAL_GENERATOR.reset_generator(generator_name)
+  print 'New generator is ', type(GLOBAL_GENERATOR.generator)
 
 def generate_midi(midi_data, total_seconds=10):
     primer_sequence = magenta.music.midi_io.midi_to_sequence_proto(midi_data)
@@ -58,6 +110,11 @@ def generate_midi(midi_data, total_seconds=10):
         qpm = 120
     primer_sequence.tempos[0].qpm = qpm
 
+    print 'Primer sequence is'
+    for note in primer_sequence.notes:
+      print 'Note %i %4.4f %4.4f' % (note.pitch, note.start_time, note.end_time)
+    print 'With tempo', qpm
+
     generator_options = generator_pb2.GeneratorOptions()
     # Set the start time to begin on the next step after the last note ends.
     last_end_time = (max(n.end_time for n in primer_sequence.notes)
@@ -67,9 +124,11 @@ def generate_midi(midi_data, total_seconds=10):
         end_time=total_seconds)
 
     # generate the output sequence
-    generated_sequence = generator.generate(primer_sequence, generator_options)
-
+    # generated_sequence = generator.generate(primer_sequence, generator_options)
+    generated_sequence = GLOBAL_GENERATOR.generator.generate(
+        primer_sequence, generator_options)
     output = tempfile.NamedTemporaryFile()
     magenta.music.midi_io.sequence_proto_to_midi_file(generated_sequence, output.name)
     output.seek(0)
+    print(time.time())
     return output

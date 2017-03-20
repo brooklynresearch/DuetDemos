@@ -19,6 +19,7 @@ import {FirstDemo} from 'demos/FirstDemo'
 import {BlankDemo} from 'demos/BlankDemo'
 import {Arpeggiator} from 'demos/Arpeggiator'
 import {Quantizer} from 'demos/Quantizer'
+import {ServerDemo} from 'demos/ServerDemo'
 import 'babel-polyfill'
 
 export class Controller {
@@ -52,6 +53,11 @@ export class Controller {
                 const quantizer = new Quantizer(this.container)
                 quantizer.start()
                 break
+
+            case "#serverdemo": // SERVER DEMO
+                const serverDemo = new ServerDemo(this.container)
+                serverDemo.start()
+                break;
 
             default:
                 const blankDemo = new BlankDemo(this.container)
