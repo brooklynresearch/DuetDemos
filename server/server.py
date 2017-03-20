@@ -42,10 +42,13 @@ def predict():
 
 @app.route('/model', methods=['POST'])
 def model():
-    model = request.args.get('model', None)
+    model = request.get_json().get('model')
+    print("in model")
+    print(getjson)
     if model:
         # reset_generator(model)
         print 'Reset generator to', model
+    print(json.dumps({'status':'OK','user':model}))
     return json.dumps({'status':'OK','user':model});
 
 

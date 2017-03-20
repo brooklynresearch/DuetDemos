@@ -131,5 +131,4 @@ def generate_midi(midi_data, total_seconds=10):
     magenta.music.midi_io.sequence_proto_to_midi_file(generated_sequence, output.name)
     output.seek(0)
     print(time.time())
-    print(BUNDLE_NAME)
     return output

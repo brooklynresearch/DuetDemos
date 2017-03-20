@@ -22,8 +22,8 @@ import 'whatwg-fetch'
 class AI extends events.EventEmitter{
 	constructor(){
 		super()
-		this.INTERRUPT = 30000 // Note Interrupt Timeout
-		this.WAIT = 600// Wait After Note Timeout
+		this.INTERRUPT = 10000 // Note Interrupt Timeout
+		this.WAIT = 1000// Wait After Note Timeout
 
 		this._newTrack()
 
@@ -88,15 +88,21 @@ class AI extends events.EventEmitter{
 	  //           this.emit(action.action, action.note.midi, action.curr_time + now)
 			// }
 
-			// fetch('/model', {
-			//   method: 'POST',
-			//   headers: {
-			//     'Content-Type': 'application/json'
-			//   },
-			//   body: JSON.stringify({
-			//     model: 'GRUNDLE'
-			//   })
-			// })
+			fetch('/model', {
+			  method: 'POST',
+			  headers: {
+			    'Content-Type': 'application/json'
+			  },
+			  body: JSON.stringify({
+			    model: 'GRUNDLE'
+			  })
+			})
+			.then(function(res){ 
+				console.log(res);
+			})
+			.catch(function(error){
+				console.log('Request failed', error)
+			})
 
 			this._lastPhrase = -1
 			this.emit('sent')
