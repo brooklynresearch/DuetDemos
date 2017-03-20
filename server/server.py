@@ -44,7 +44,7 @@ def predict():
 def model():
     model = request.get_json().get('model')
     print("in model")
-    print(getjson)
+    print(model)
     if model:
         # reset_generator(model)
         print 'Reset generator to', model

@@ -94,7 +94,7 @@ class AI extends events.EventEmitter{
 			    'Content-Type': 'application/json'
 			  },
 			  body: JSON.stringify({
-			    model: 'GRUNDLE'
+			    model: 'attention_rnn'
 			  })
 			})
 			.then(function(res){ 
