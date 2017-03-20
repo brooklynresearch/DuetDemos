@@ -17,6 +17,7 @@
 import {Tutorial} from 'ai/Tutorial'
 import {FirstDemo} from 'demos/FirstDemo'
 import {BlankDemo} from 'demos/BlankDemo'
+import {ServerDemo} from 'demos/ServerDemo'
 import 'babel-polyfill'
 
 export class Controller {
@@ -40,6 +41,11 @@ export class Controller {
                 const firstDemo = new FirstDemo(this.container)
                 firstDemo.start()
                break;
+
+            case "#serverdemo": // SERVER DEMO
+                const serverDemo = new ServerDemo(this.container)
+                serverDemo.start()
+                break;
 
             default:
                 const blankDemo = new BlankDemo(this.container)

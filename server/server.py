@@ -14,7 +14,7 @@
 # limitations under the License.
 # 
 
-from predict import generate_midi
+from predict import generate_midi, reset_generator, switch_bundle
 import os
 from flask import send_file, request
 import pretty_midi
@@ -39,6 +39,14 @@ def predict():
     ret_midi = generate_midi(midi_data, duration)
     return send_file(ret_midi, attachment_filename='return.mid', 
         mimetype='audio/midi', as_attachment=True)
+
+@app.route('/model', methods=['POST'])
+def model():
+    model = request.args.get('model', None)
+    if model:
+        # reset_generator(model)
+        print 'Reset generator to', model
+    return json.dumps({'status':'OK','user':model});
 
 
 @app.route('/', methods=['GET', 'POST'])
