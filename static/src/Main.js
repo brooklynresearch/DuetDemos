@@ -20,6 +20,7 @@ import {BlankDemo} from 'demos/BlankDemo'
 import {Arpeggiator} from 'demos/Arpeggiator'
 import {Quantizer} from 'demos/Quantizer'
 import {ServerDemo} from 'demos/ServerDemo'
+import {MidiPlayer} from 'demos/MidiPlayer'
 import 'babel-polyfill'
 
 export class Controller {
@@ -64,6 +65,11 @@ export class Controller {
             case "#serverdemo": // SERVER DEMO
                 const serverDemo = new ServerDemo(this.container)
                 serverDemo.start()
+                break;
+
+            case "#midiplayer": // MIDI PLAYER
+                const midiPlayer = new MidiPlayer(this.container)
+                midiPlayer.start()
                 break;
 
             default:
