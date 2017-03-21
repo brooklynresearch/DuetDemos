@@ -5,33 +5,3 @@
     </select>
 </div>
 
-<script>
-    console.log("INLINE SCRIPT")
-    var models = {
-        'melodic': 'attention_rnn',
-        'polyphonic': 'polyphony_rnn'
-    }
-
-    function changeModel(event) {
-        console.log("CALLING changemodel")
-        fetch('/model', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            model: models[event.target.value]
-          })
-        })
-        .then(function(res){ 
-            console.log(res);
-        })
-        .catch(function(error){
-            console.log('Request failed', error)
-        })
-    }
-
-    var elem = document.getElementById("change-model")
-    console.log("Select Element", elem)
-    elem.addEventListener("change", changeModel)
-</script>
