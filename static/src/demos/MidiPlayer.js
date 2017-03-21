@@ -45,16 +45,16 @@ export class MidiPlayer extends events.EventEmitter{
     start() {
         this.keyboard.activate()
         var that = this;
-        MidiConvert.load("midi/bach_846.mid", function(midi) {
+        MidiConvert.load("midi/schubert_935_4.mid", function(midi) {
             console.log("MIDI FILE LOADED", midi);
 
             Tone.Transport.bpm.value = midi.header.bpm;
             Tone.Transport.timeSignature = midi.timeSignature;
 
-            var notes = midi.get("Piano left").notes;
+            var notes = midi.get("Piano right").notes;
             var i = 0;
             notes.forEach(function(event) {
-                if (i <= 11) {
+                if (i <= 63) {
                     that.midiNotes.push({note: event.midi, time: event.time, duration: event.duration});
                 }
                 i++;
