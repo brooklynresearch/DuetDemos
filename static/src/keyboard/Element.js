@@ -19,8 +19,9 @@ import 'style/keyboard.css'
 import 'pepjs'
 import {Roll} from 'roll/Roll'
 import {Note} from 'keyboard/Note'
-
-const offsets = [0, 0.5, 1, 1.5, 2, 3, 3.5, 4, 4.5, 5, 5.5, 6]
+/*
+const offsets = [0, 0.5, 1, 1.5, 2, 3, 3.5, 4, 4.5, 5, 5.5, 6]*/
+const offsets = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 class KeyboardElement extends events.EventEmitter {
 
@@ -52,19 +53,22 @@ class KeyboardElement extends events.EventEmitter {
 		// clear the previous ones
 		this._container.innerHTML = ''
 		// each of the keys
+		/*const keyWidth = (1 / 7) / octaves*/
 		const keyWidth = (1 / 7) / octaves
 		for (let i = lowest; i < lowest + octaves * 12; i++){
 			let key = document.createElement('div')
 			key.classList.add('key')
-			let isSharp = ([1, 3, 6, 8, 10].indexOf(i % 12) !== -1)
-			key.classList.add(isSharp ? 'black' : 'white')
+			/*let isSharp = ([1, 3, 6, 8, 10].indexOf(i % 12) !== -1)
+			key.classList.add(isSharp ? 'black' : 'white')*/
+			key.classList.add('white')
 			this._container.appendChild(key)
 			// position the element
 			
 			let noteOctave = Math.floor(i / 12) - Math.floor(lowest / 12)
-			let offset = offsets[i % 12] + noteOctave * 7
-			key.style.width = `${keyWidth * 100}%`
-			key.style.left = `${offset * keyWidth * 100}%`
+			/*let offset = offsets[i % 12] + noteOctave * 7*/
+			let offset = offsets[i % 12] + noteOctave * 12
+			key.style.width = `${keyWidth * 80}%`
+			key.style.left = `${offset * keyWidth * 90}%`
 			key.id = i.toString()
 			key.setAttribute('touch-action', 'none')
 

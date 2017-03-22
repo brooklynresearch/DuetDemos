@@ -19,11 +19,11 @@
 
 	#ai {
 		opacity: 0;
-		background-image: radial-gradient(ellipse farthest-corner at 50% 0px, $orange 0%, black $glowReach);
+		background-image: radial-gradient(ellipse farthest-corner at 90% 0px, $orange 20%, black $glowReach);
 	}
 
 	#user {
 		opacity: 0;
-		background-image: radial-gradient(ellipse farthest-corner at 50% 0px, $blue 0%, black $glowReach);
+		background-image: radial-gradient(ellipse farthest-corner at 10% 0px, $blue 20%, black $glowReach);
 	}
 }
