@@ -2,6 +2,7 @@ import {Keyboard} from 'keyboard/Keyboard'
 import {AI} from 'ai/AI'
 import {Sound} from 'sound/Sound'
 import {Glow} from 'interface/Glow'
+import buckets from 'buckets-js'
 import Tone from 'tone'
 
 export class Quantizer {
@@ -20,12 +21,12 @@ export class Quantizer {
 
         this.kickSampler = new Tone.Sampler('audio/drums/Kick02.mp3', () => {
             console.log ("LOADED KICK");
-            this.kickSampler.volume.value = 2;
+            this.kickSampler.volume.value = 1;
         }).toMaster();
 
         this.snareSampler = new Tone.Sampler('audio/drums/Snare05.mp3', () => {
             console.log("LOADED SNARE");
-            this.snareSampler.volume.value = 2;
+            this.snareSampler.volume.value = 1;
         }).toMaster();
 
         this.beat = new Tone.Sequence((time, count) => {
@@ -37,52 +38,60 @@ export class Quantizer {
                 this.snareSampler.triggerAttackRelease(0, '8n');
             }
         }, [0,1,2,3], '8n')
+
+        this.aiQueue = new buckets.Queue()
     }
 
     start() {
         Tone.Transport.start()
+
+        // JUST PLAY ALL THE AI NOTES ON 8th NOTES
+        Tone.Transport.scheduleRepeat((time) => {
+            if(!this.aiQueue.isEmpty()) {
+                console.log("Queue'd Note!")
+                const event = this.aiQueue.dequeue()
+                event.callback()
+            }
+        }, '8n')
+
         this.beat.start('1m')
         this.keyboard.activate()
         // Start listening
         this.keyboard.on('keyDown', (note) => {
-            // Schedule input for the next 8th note
-            var t = Tone.Time(Tone.now()).quantize('@8n',0.2).eval()
-            //Tone.Transport.schedule((t) => {
-                this.sound.keyDown(note, t)
-                this.ai.keyDown(note, t)
+                this.sound.keyDown(note)
+                this.ai.keyDown(note)
                 this.glow.user()
-            //}, t)
         })
 
         this.keyboard.on('keyUp', (note) => {
-            // Schedule input for the next 8th note
-            var t = Tone.Time(Tone.now()).quantize('@8n', 0.2).eval()
-            //Tone.Transport.schedule((t) => {
                 this.sound.keyUp(note)
                 this.ai.keyUp(note)
                 this.glow.user()
-            //}, '@8n')
         })
 
         this.ai.on('keyDown', (note, time) => {
-            // Schedule output for the next 8th note
-            var t = Tone.Time(time).quantize('@8n', 0.2).eval()
-            //Tone.Transport.schedule((t) => {
-                this.sound.keyDown(note, t, true)
-                this.keyboard.keyDown(note, t, true)
-                this.glow.ai(time)
-            //}, '@8n')
+            console.log("Queueing keydown")
+            this.aiQueue.add({
+                time : time,
+                callback : () => {
+                    const now = Tone.now()
+                    this.sound.keyDown(note, now, true)
+                    this.keyboard.keyDown(note, now, true)
+                    this.glow.ai(now)
+                }
+            })
         })
 
         this.ai.on('keyUp', (note, time) => {
-            // Schedule output for the next 8th note
-            //var t = Tone.now().quantize('@8n', 0.5).eval()
-            //Tone.Transport.schedule((t) => {
-            var t = Tone.Time(time).quantize('@8n', 0.2).eval()
-                this.sound.keyUp(note, t, true)
-                this.keyboard.keyUp(note, t, true)
-                this.glow.ai(time)
-            //}, '@8n')
+            this.aiQueue.add({
+                time: time,
+                callback: () => {
+                    const now = Tone.now()
+                    this.sound.keyUp(note, now, true)
+                    this.keyboard.keyUp(note, now, true)
+                    this.glow.ai(now)
+                }
+            })
         })
     }
 }
