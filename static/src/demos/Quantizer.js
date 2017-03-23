@@ -45,14 +45,46 @@ export class Quantizer {
     start() {
         Tone.Transport.start()
 
-        // JUST PLAY ALL THE AI NOTES ON 8th NOTES
+        /* IDEA: iterate through the queue. First note of the phrase (use some flag that 
+         * gets reset) is scheduled for the beginning of next measure; Following
+         * noteOns and noteOffs are scheduled relative to that first note
+         * using the the BPM to determine the multiple of a small note value 
+         * (16th or 32nd notes) that is closest to the time value returned by the AI.
+         * In other words, take the time from the AI respose and figure out the nearest
+         * 32nd (or 16th) note. Using a small note value to allow more variation.
+         *
+         * EX:
+         * var t = begin + mult("32n", 14)
+         * scheduleNoteOn(note, t)
+         *
+         * Where begin is the scheduled time of the first note*/
+
+
+        // JUST PLAYING ALL THE AI NOTES ON 8th NOTES
+        var begin = 0
         Tone.Transport.scheduleRepeat((time) => {
             if(!this.aiQueue.isEmpty()) {
-                console.log("Queue'd Note!")
+                if (begin === 0) {
+                    begin = Tone.Time('+1m') // next measure
+                }
+                //console.log("Queue'd Note!")
                 const event = this.aiQueue.dequeue()
-                event.callback()
+                const unit = Tone.Time('8n')
+                const factor = Math.ceil(event.time / 0.25)
+                console.log("Factor ", factor)
+                //const timeStr = event.time.toString()
+                //const q = begin + Tone.Time("("+timeStr+"/0.125)")
+                //const q = Tone.Time(begin.eval() + unit.mult(factor).eval())
+                const q = unit.mult(factor).eval()
+                console.log("Scheduling Note for ", q)
+                //Tone.Transport.schedule((time) => {
+                    event.callback(q)
+                //}, q)
+
+            } else {
+                begin = 0
             }
-        }, '8n')
+        }, '16n')
 
         this.beat.start('1m')
         this.keyboard.activate()
@@ -70,14 +102,14 @@ export class Quantizer {
         })
 
         this.ai.on('keyDown', (note, time) => {
-            console.log("Queueing keydown")
+            //console.log("Queueing keydown")
             this.aiQueue.add({
                 time : time,
-                callback : () => {
-                    const now = Tone.now()
-                    this.sound.keyDown(note, now, true)
-                    this.keyboard.keyDown(note, now, true)
-                    this.glow.ai(now)
+                callback : (t) => {
+                    //const now = Tone.now()
+                    this.sound.keyDown(note, t, true)
+                    this.keyboard.keyDown(note, t, true)
+                    this.glow.ai(t)
                 }
             })
         })
@@ -85,11 +117,11 @@ export class Quantizer {
         this.ai.on('keyUp', (note, time) => {
             this.aiQueue.add({
                 time: time,
-                callback: () => {
-                    const now = Tone.now()
-                    this.sound.keyUp(note, now, true)
-                    this.keyboard.keyUp(note, now, true)
-                    this.glow.ai(now)
+                callback: (t) => {
+                    //const now = Tone.now()
+                    this.sound.keyUp(note, t, true)
+                    this.keyboard.keyUp(note, t, true)
+                    this.glow.ai(t)
                 }
             })
         })
