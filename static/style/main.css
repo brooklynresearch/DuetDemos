@@ -1,5 +1,6 @@
 
 $keyboardHeight : 100px;
+$sequencerHeight : 400px;
 $bottomHeight : 30px;
 
 body, #container{
@@ -18,9 +19,16 @@ body, #container{
 		height: $keyboardHeight;
 	}
 
+	#sequencer {
+		position: absolute;
+		bottom: $bottomHeight;
+		left: 0px;
+		height: $sequencerHeight;
+	}
+
 	#roll {
 		width : 100%;
-		height: calc(100% - #{$keyboardHeight + $bottomHeight});
+		height: calc(100% - #{$sequencerHeight + $bottomHeight});
 		position: absolute;
 		top: 0px;
 		left: 0px;
@@ -28,7 +36,7 @@ body, #container{
 
 	#glow {
 		width : 100%;
-		height: calc(100% - #{$keyboardHeight + $bottomHeight});
+		height: calc(100% - #{$sequencerHeight + $bottomHeight});
 		position: absolute;
 		top: 0px;
 		left: 0px;
