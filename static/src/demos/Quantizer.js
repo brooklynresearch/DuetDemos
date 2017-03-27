@@ -19,25 +19,50 @@ export class Quantizer {
         this.element.id = 'tutorial'
         container.appendChild(this.element)
 
-        this.kickSampler = new Tone.Sampler('audio/drums/Kick02.mp3', () => {
-            console.log ("LOADED KICK");
-            this.kickSampler.volume.value = 1;
+        this.kickSampler = new Tone.Sampler('audio/drums/Kick15.wav', () => {
+            this.kickSampler.volume.value = 1
+        }).toMaster();
+
+        this.hatSampler = new Tone.Sampler('audio/drums/Hihat04.wav', () => {
+            this.hatSampler.volume.value = -3
         }).toMaster();
 
         this.snareSampler = new Tone.Sampler('audio/drums/Snare05.mp3', () => {
-            console.log("LOADED SNARE");
-            this.snareSampler.volume.value = 1;
+            this.snareSampler.volume.value = 1
         }).toMaster();
 
-        this.beat = new Tone.Sequence((time, count) => {
-            if (count === 0) {
+        this.sideSampler = new Tone.Sampler('audio/drums/Side07.wav', () => {
+            this.sideSampler.volume.value = 1
+        }).toMaster();
+
+
+        Tone.Transport.timeSignature = [4,4]
+        Tone.Transport.bpm.value = 120
+
+        //Samba beat
+        this.sambaBeat = new Tone.Sequence((time, count) => {
+            if ([0,3,4,7,8,11,12,15].indexOf(count) >= 0) {
+                this.kickSampler.triggerAttackRelease(0, '8n')
+            }
+            if ([0,2,5,7,9,12,14].indexOf(count) >= 0) {
+                this.sideSampler.triggerAttackRelease(0, '8n')
+            }
+            if ([0,2,3,4,6,7,8,10,11,12,14,15].indexOf(count) >= 0) {
+                this.hatSampler.triggerAttackRelease(0, '8n')
+            }
+        }, [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],'8n')
+
+        //Basic beat
+        this.basicBeat = new Tone.Sequence((time, count) => {
+            //this.hatSampler.triggerAttackRelease(0,'8n')
+            if ([0,4,5].indexOf(count) >= 0) {
                 //console.log("KICK");
                 this.kickSampler.triggerAttackRelease(0, '8n');
-            } else if (count === 2) {
+            } else if ([2,6].indexOf(count) >= 0) {
                 //console.log("SNARE");
                 this.snareSampler.triggerAttackRelease(0, '8n');
             }
-        }, [0,1,2,3], '8n')
+        }, [0,1,2,3,4,5,6,7], '8n')
 
         this.aiQueue = new buckets.Queue()
     }
@@ -45,20 +70,7 @@ export class Quantizer {
     start() {
         Tone.Transport.start()
 
-        /* IDEA: iterate through the queue. First note of the phrase (use some flag that 
-         * gets reset) is scheduled for the beginning of next measure; Following
-         * noteOns and noteOffs are scheduled relative to that first note
-         * using the the BPM to determine the multiple of a small note value 
-         * (8th or 16th notes) that is closest to the time value returned by the AI.
-         * In other words, take the time from the AI respose and figure out the nearest
-         * 8th (or 16th) note. Using a small note value to allow more variation.
-         *
-         * EX:
-         * var t = begin + mult("8n", 14)
-         * scheduleNoteOn(note, t)
-         *
-         * Where begin is the scheduled time of the first note*/
-
+        // check for queue'd AI notes and trigger callbacks
         var begin = 0
         Tone.Transport.scheduleRepeat((time) => {
             if(!this.aiQueue.isEmpty()) {
@@ -79,7 +91,11 @@ export class Quantizer {
             }
         }, '16n')
 
-        this.beat.start('1m')
+
+        var elem = document.getElementById("change-beat")
+        elem.addEventListener("change", this.changeBeat.bind(this))
+
+        this.basicBeat.start('1m')
         this.keyboard.activate()
         // Start listening
         this.keyboard.on('keyDown', (note) => {
@@ -118,5 +134,25 @@ export class Quantizer {
                 }
             })
         })
+    }
+
+     changeBeat(event) {
+        switch(event.target.value) {
+            case 'none':
+                this.basicBeat.stop(Tone.now())
+                this.sambaBeat.stop(Tone.now())
+                break
+
+            case 'basic':
+                this.sambaBeat.stop(Tone.now())
+                this.basicBeat.start('+1m')
+                break
+
+            case 'samba':
+                this.basicBeat.stop(Tone.now())
+                this.sambaBeat.start('+1m')
+                break
+        }
+
     }
 }
