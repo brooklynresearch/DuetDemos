@@ -34,6 +34,8 @@ export class MidiPlayer extends events.EventEmitter{
         this.ai = new AI()
 
         this.midiNotes = [];
+        this.sequenceLength = 63
+        this.sequencePos = 0
 
         var midiTemplate = require("templates/midiplayer.hbs");
         this.element = document.createElement('div')
@@ -52,14 +54,17 @@ export class MidiPlayer extends events.EventEmitter{
             Tone.Transport.timeSignature = midi.timeSignature;
 
             var notes = midi.get("Piano right").notes;
-            var i = 0;
+            //var i = 0;
             notes.forEach(function(event) {
-                if (i <= 63) {
+                //if (i <= 63) {
                     that.midiNotes.push({note: event.midi, time: event.time, duration: event.duration});
-                }
-                i++;
+                //}
+                //i++;
             });
         });
+
+        this.playBtn = document.getElementById('start-btn')
+        this.playBtn.onclick = this.playMidi.bind(this)
 
         this.on('keyDown', (note, time) => {
             this.sound.keyDown(note, time)
@@ -106,6 +111,7 @@ export class MidiPlayer extends events.EventEmitter{
         })
 
          //setInterval(function() {
+         /*
                 that._promiseTimeout(400).then(() => {
                     //this._addText('When you play a few notes', 'user', 4200)
                     return that._promiseTimeout(500)
@@ -123,7 +129,23 @@ export class MidiPlayer extends events.EventEmitter{
                 }).then(() => {
                     //this._addText('the computer will respond to what you play', 'ai', 5000)
                 })
-        //}, 25000);
+        //}, 25000);*/
+    }
+
+    playMidi() {
+        console.log("MIDI NOTES", this.midiNotes)
+        const now = Tone.now()
+        var sequenceArray = this.midiNotes.slice(this.sequencePos, this.sequencePos + this.sequenceLength+1)
+        var startTime = sequenceArray[0].time
+        sequenceArray.forEach((event, index) => {
+                //console.log(event.note)
+                this.emit('keyDown', event.note, event.time + now - startTime)
+                this.emit('keyUp', event.note, event.time + event.duration * 0.9 + now - startTime)
+
+                this.emit('aiKeyDown', event.note, event.time + now - startTime)
+                this.emit('aiKeyUp', event.note, event.time + event.duration * 0.9 + now - startTime)
+        })
+        this.sequencePos += this.sequenceLength
     }
 
     _promiseTimeout(time){
