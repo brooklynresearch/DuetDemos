@@ -82,7 +82,9 @@ export class Controller {
     static changeModel(event) {
 
         this.models = {
-            'melodic': 'attention_rnn',
+            'melodic - attention': 'attention_rnn',
+            'melodic - lookback': 'lookback_rnn',
+            'melodic - basic': 'basic_rnn',
             'polyphonic': 'polyphony_rnn'
         }
 
