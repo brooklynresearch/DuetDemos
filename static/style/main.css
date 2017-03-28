@@ -19,6 +19,14 @@ body, #container{
 		height: $keyboardHeight;
 	}
 
+	#beatCursor {
+		position: absolute;
+		bottom: calc(#{$bottomHeight + $sequencerHeight});
+		height: 30px;
+		left: 20%;
+		width: 80%;
+	}
+
 	#sequencer {
 		position: absolute;
 		bottom: $bottomHeight;
@@ -29,7 +37,7 @@ body, #container{
 
 	#roll {
 		width : 100%;
-		height: calc(100% - #{$sequencerHeight + $bottomHeight});
+		height: calc(100% - #{$keyboardHeight + $bottomHeight});
 		position: absolute;
 		top: 0px;
 		left: 0px;

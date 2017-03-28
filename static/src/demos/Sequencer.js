@@ -18,45 +18,41 @@ export class Sequencer {
         this.element.innerHTML = demoTemplate({title: "Sequencer"});
         this.element.id = 'tutorial'
         container.appendChild(this.element)
+        
 
-        var keys = new Tone.MultiPlayer({
-            urls : {
-                "A" : "../../audio/Salamander/A1.mp3",
-                "C" : "../../audio/Salamander/C2.mp3",
-                "D#" : "../../audio/Salamander/Ds2.mp3",
-                "F#" : "../../audio/Salamander/Fs2.mp3",
-            },
-            volume : -10,
-            fadeOut : 0.1,
-        }).toMaster();
-        //the notes
-        var noteNames = ["F#", "D#", "C", "A"];
+        this.beatIndicatorElement = document.createElement('div');
+        this.beatIndicatorElement.id = 'beatCursor';
+        container.appendChild(this.beatIndicatorElement);
 
-        console.log("Loading Loop")
-        /*
-        this.loop = new Tone.Sequence((time, count) => {
-            if (count === 0) {
-                //console.log("KICK");
-                this.sound.keyDown(count + 48);
-            } else if (count === 2) {
-                //console.log("SNARE");
-                this.sound.keyDown(count + 48);
+        this.indicatorCanvas = document.createElement ('canvas');
+        this.indicatorCtx = this.indicatorCanvas.getContext('2d');
+        this.indicatorCanvas.width = document.getElementById('sequencer').offsetWidth;
+        this.indicatorCanvas.height = this.sequencer._keyboardInterface._matrix[0].height;
+        this.beatIndicatorElement.appendChild(this.indicatorCanvas);
+
+        this._beatCursor = [];
+        for(var i=0; i<16; i++){
+            let beat = {
+                id : 0,
+                width   :   this.sequencer._keyboardInterface._matrix[0].width,
+                height  :   this.sequencer._keyboardInterface._matrix[0].height,
+                x       :   this.sequencer._keyboardInterface._matrix[i * 12].x,
+                y       :   0
             }
-        }, [0,1,2,3], '8n')
-        */
-
-        let seq = document.getElementById('sequencer');
-        console.log("sequencer element");
+            this._beatCursor.push(beat);
+        }
         
         //console.log(this.sequencer._keyboardInterface._matrix);
 
         this.loop = new Tone.Sequence((time, count) => {
 
             let matrix = this.sequencer._keyboardInterface._matrix;
-
-            for(var beat = 0; beat < 16; beat++){
+            this.indicatorCtx.clearRect(0, 0, this.indicatorCanvas.width, this.indicatorCanvas.height);
+            for(var beat = 0; beat <16; beat++){
                 if(count === beat){
                     const now = Tone.now()
+                    this.indicatorCtx.fillStyle = "rgba(0, 183, 235, 0.5)";
+                    this.indicatorCtx.fillRect(this._beatCursor[beat].x,this._beatCursor[beat].y,this._beatCursor[beat].width,this._beatCursor[beat].height);
                     for (var note = 0; note < 12; note++){
                         if (matrix[beat * 12 + note].enabled == true){
                             console.log(note);

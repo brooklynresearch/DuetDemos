@@ -49,10 +49,10 @@ class SequencerElement extends events.EventEmitter {
 		this._container.appendChild(this._canvas);
 
 		this._matrix = []; 
+		this._beatIndicator = [];
 
 		for( let i=0; i<columns; i++ ) {
 		  for( let j=0; j<rows; j++ ) {
-		    
 		    let cell = {
 		      id: i * rows + j,
 		      column: i,
