@@ -1,6 +1,6 @@
 
 $keyboardHeight : 100px;
-$sequencerHeight : 400px;
+$sequencerHeight : 300px;
 $bottomHeight : 30px;
 
 body, #container{
@@ -22,7 +22,8 @@ body, #container{
 	#sequencer {
 		position: absolute;
 		bottom: $bottomHeight;
-		left: 0px;
+		left: 20%;
+		width: 80%;
 		height: $sequencerHeight;
 	}
 

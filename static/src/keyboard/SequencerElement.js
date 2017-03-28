@@ -17,8 +17,8 @@
 import events from 'events'
 import 'style/sequencer.css'
 import 'pepjs'
+import 'jquery'
 import Tone from 'Tone/core/Tone'
-import NexusUI from 'nexusui/dist/nexusUI'
 import {Roll} from 'roll/Roll'
 import {Note} from 'keyboard/Note'
 
@@ -26,135 +26,116 @@ const offsets = [0, 0.5, 1, 1.5, 2, 3, 3.5, 4, 4.5, 5, 5.5, 6]
 
 class SequencerElement extends events.EventEmitter {
 
-	constructor(container, lowest=36, octaves=4){
+	constructor(container, lowest=36, octaves=4, matrix) {
+
 		super()
+		
+		// window.$ = window.jQuery = require("jquery");
 		this._container = document.createElement('div')
 		this._container.id = 'sequencer'
 		container.setAttribute('touch-action', 'none')
 		container.appendChild(this._container)
 
-		//some default menu stuff
-		container.addEventListener('pointerup', (e) => delete this._pointersDown[e.pointerId])
-		container.addEventListener('contextmenu', this._absorbEvent.bind(this))
+		this._canvas = document.createElement ('canvas');
+		this._ctx = this._canvas.getContext('2d');
+		const rows = matrix.rows
+		const columns = matrix.columns
+		const stepWidth  = (document.getElementById('sequencer').offsetWidth / columns);
+		const stepHeight = (document.getElementById('sequencer').offsetHeight / rows);
+		const slotSize = { width: stepWidth, height: stepHeight };
+		this._canvas.width = columns * slotSize.width;
+		this._canvas.height = rows * slotSize.height;
 
-		this._keys = {}
+		this._container.appendChild(this._canvas);
 
-		this._pointersDown = {}
+		this._matrix = []; 
+
+		for( let i=0; i<columns; i++ ) {
+		  for( let j=0; j<rows; j++ ) {
+		    
+		    let cell = {
+		      id: i * rows + j,
+		      column: i,
+		      row: j, 
+		      width: slotSize.width-4, 
+		      height: slotSize.height-4, 
+		      x: i * slotSize.width, 
+		      y: j * slotSize.height, 
+		      enabled: false,
+		      hovering: false
+		    }
+		    this._matrix.push(cell);
+		  }
+		}
+		this._renderMatrix(this._matrix);
+
+		this._canvas.addEventListener('mousedown', this._handleDown.bind(this));
+		this._canvas.addEventListener('mouseup',  this._handleUp.bind(this));
+		this._canvas.addEventListener('touchstart', this._handleDown.bind(this));
+		this._canvas.addEventListener('touchend', this._handleUp.bind(this));
+		this._canvas.addEventListener('touchcancel', this._handleUp.bind(this));
+
+ 
+	}
 
 
-		this.resize(lowest, octaves)
+	_renderMatrix(matrix) {
+	  this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
 
-		//Roll.appendTo(container)
+	  for( var i=0; i<matrix.length; i++ ) {
+	    
+	    if (matrix[i].enabled === false){
+	    	//var noteNum = (i + 48);
+	    	//this.emit('keyUp', noteNum)
+	      	this._ctx.fillStyle="rgba(255, 255, 255, 0.2)";
+	    } 
+	    else {
+	    	//var noteNum = (i + 48);
+	    	//this.emit('keyDown', noteNum)
+	      	this._ctx.fillStyle="rgba(249, 187, 45, 1)";
+	    }
+	    this._ctx.fillRect(matrix[i].x,matrix[i].y,matrix[i].width,matrix[i].height);
+	  }
+	}
 
-		this._aiNotes = {}
-		this._notes = {}
+	_tapLocation(tap){
+		for (var i=0; i<=this._matrix.length; i++ ) {
+		    if( tap.x >= this._matrix[i].x && tap.x <=this._matrix[i].x + this._matrix[i].width ) {
+		     	if( tap.y >= this._matrix[i].y && tap.y <= this._matrix[i].y + this._matrix[i].height ) {
+		    		return(this._matrix[i].id);
+		    	}
+		    }
+		}
+	}
 
-		let head = document.getElementsByTagName("head")[0];
-		let js = document.createElement("script");
-		js.type = "text/javascript";
-		js.src = 'http://localhost:8000/nexusUI/dist/nexusUI.js'
-		head.appendChild(js);
+	_handleDown(event) {
+		let rect = this._canvas.getBoundingClientRect()
+		let tap = {x: event.x - rect.left, y: event.y-rect.top}
+		let currentStep = this._tapLocation(tap);
+		this._enableCell(currentStep)
+		
+	}
+
+	_enableCell(cell){
+		if(this._matrix[cell].enabled === true){
+	  		this._matrix[cell].enabled = false;
+	  	} else {
+	  		this._matrix[cell].enabled = true;
+	  	}
+	  	this._renderMatrix(this._matrix);
+
+	}
 
 
-
-		let canvas = document.createElement ('canvas');
-		canvas.setAttribute('nx', 'dial');
-		this._container.appendChild(canvas);
-
-		console.log(window.nx);
-
+	_handleUp(event) {
 
 	}
 
 	resize(lowest, octaves){
 		this._keys = {}
-
 		const MATRIX_COLS = 16
 		const MATRIX_ROWS = 12
 
-
-		// clear the previous ones
-		// this._container.innerHTML = '<canvas nx="matrix" id="matrix1" class="nx" height="500" width="2110" style="width: 1055px; height: 250px;"></canvas>'
-		/*
-		for(let x=0; x<MATRIX_COLS; x++){
-			for(let y=0; y<MATRIX_ROWS; y++){
-				let step = document.createElement('div')
-				step.classList.add('step')
-				this._container.appendChild(step)
-
-				let xOffset = (x / MATRIX_COLS)
-				let yOffset = (y / MATRIX_ROWS)
-				step.style.left = `${xOffset * 100}%`
-				step.style.height = `${100/MATRIX_ROWS}%`
-				step.style.top = `${yOffset * 100}%`
-
-				step.id = (y * MATRIX_COLS) + x
-				step.setAttribute('touch-action', 'none')
-
-				const fill = document.createElement('div')
-				fill.id = 'fill'
-				step.appendChild(fill)
-
-				this._bindKeyEvents(step)
-				this._keys[(y * MATRIX_COLS) + x] = step
-			}
-		}
-		*/
-
-
-		//const keyWidth = (1 / 7) / octaves
-		/*
-		const keyWidth = 1
-			let i = 60
-
-			let key = document.createElement('div')
-			key.classList.add('key')
-			let isSharp = ([1, 3, 6, 8, 10].indexOf(i % 12) !== -1)
-			key.classList.add(isSharp ? 'black' : 'white')
-			this._container.appendChild(key)
-			// position the element
-			
-			let noteOctave = Math.floor(i / 12) - Math.floor(lowest / 12)
-			//let offset = offsets[i % 12] + noteOctave * 7
-			let offset = 0
-			key.style.width = `${keyWidth * 100}%`
-			key.style.left = `${offset * keyWidth * 100}%`
-			key.id = i.toString()
-			key.setAttribute('touch-action', 'none')
-
-			const fill = document.createElement('div')
-			fill.id = 'fill'
-			key.appendChild(fill)
-			
-			this._bindKeyEvents(key)
-			this._keys[i] = key
-		*/
-		/*
-		const keyWidth = (1 / 7) / octaves
-		for (let i = lowest; i < lowest + octaves * 12; i++){
-			let key = document.createElement('div')
-			key.classList.add('key')
-			let isSharp = ([1, 3, 6, 8, 10].indexOf(i % 12) !== -1)
-			key.classList.add(isSharp ? 'black' : 'white')
-			this._container.appendChild(key)
-			// position the element
-			
-			let noteOctave = Math.floor(i / 12) - Math.floor(lowest / 12)
-			let offset = offsets[i % 12] + noteOctave * 7
-			key.style.width = `${keyWidth * 100}%`
-			key.style.left = `${offset * keyWidth * 100}%`
-			key.id = i.toString()
-			key.setAttribute('touch-action', 'none')
-
-			const fill = document.createElement('div')
-			fill.id = 'fill'
-			key.appendChild(fill)
-			
-			this._bindKeyEvents(key)
-			this._keys[i] = key
-
-		}
-		*/
 	}
 
 	_absorbEvent(event) {

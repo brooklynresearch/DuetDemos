@@ -1,4 +1,3 @@
-console.log('loaded library');
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var manager = require('./lib/core/manager');
 var domUtils = require('./lib/utils/dom');
@@ -19,8 +18,54 @@ window.nx = extend(window.nx,mathUtils)
 
 /* this onload function turns canvases into nexus elements,
  * using the canvas's id as its var name */
+  // function addLoadEvent(func) {
+  //   var oldonload = window.onload;
+  //   if (typeof window.onload != 'function') {
+  //     window.onload = func;
+  //   } else {
+  //     window.onload = function() {
+  //       if (oldonload) {
+  //         oldonload();
+  //       }
+  //       func();
+  //     }
+  //   }
+  // }
 
-window.onload = function() {
+  // addLoadEvent(function() {
+  //   console.log('yo');
+
+  //     try {
+  //       WebFont.load({
+  //         google: {
+  //           families: ['Open Sans']
+  //         }
+  //       });
+  //     } catch(e) {
+  //       console.log("font not loaded")
+  //     }
+
+  //     nx.addStylesheet();
+
+  //     // get all canvases on the page and add them to the manager
+  //     var allcanvi = document.getElementsByTagName("canvas");
+
+  //     for (i=0;i<allcanvi.length;i++) {
+  //       nx.transform(allcanvi[i]);
+  //     }
+
+  //     if (nx.isTouchDevice) {
+  //       document.addEventListener("touchmove", nx.blockMove, true);
+  //       document.addEventListener("touchstart", nx.blockMove, true);
+  //     }
+      
+  //     nx.onload();
+
+  //     nx.startPulse();
+
+  // });
+  console.log('am i loaded?');
+  
   try {
     WebFont.load({
       google: {
@@ -35,8 +80,10 @@ window.onload = function() {
 
   // get all canvases on the page and add them to the manager
   var allcanvi = document.getElementsByTagName("canvas");
-  for (i=0;i<allcanvi.length;i++) nx.transform(allcanvi[i]);
-    console.log(allcanvi[i]);
+
+  for (i=0;i<allcanvi.length;i++) {
+    nx.transform(allcanvi[i]);
+  }
 
   if (nx.isTouchDevice) {
     document.addEventListener("touchmove", nx.blockMove, true);
@@ -44,10 +91,37 @@ window.onload = function() {
   }
   
   nx.onload();
+  console.log('i loaded');
 
   nx.startPulse();
+
+// window.onload = function() {
+//   try {
+//     WebFont.load({
+//       google: {
+//         families: ['Open Sans']
+//       }
+//     });
+//   } catch(e) {
+//     console.log("font not loaded")
+//   }
+
+//   nx.addStylesheet();
+
+//   // get all canvases on the page and add them to the manager
+//   var allcanvi = document.getElementsByTagName("canvas");
+//   for (i=0;i<allcanvi.length;i++) nx.transform(allcanvi[i]);
+
+//   if (nx.isTouchDevice) {
+//     document.addEventListener("touchmove", nx.blockMove, true);
+//     document.addEventListener("touchstart", nx.blockMove, true);
+//   }
   
-};
+//   nx.onload();
+
+//   nx.startPulse();
+  
+// };
 },{"./lib/core/manager":2,"./lib/utils/dom":4,"./lib/utils/drawing":5,"./lib/utils/math":6,"extend":52,"webfontloader":53}],2:[function(require,module,exports){
 
 /** 
@@ -368,25 +442,25 @@ manager.prototype.removeAni = function(fn) {
   
 manager.prototype.addStylesheet = function() {
   var htmlstr = '<style>'
-    + 'select {'
-    + 'width: 150px;'
-    + 'padding: 5px 5px;'
-    + 'font-size: 16px;'
-    + 'color:#666666;'
-    + 'border: solid 2px #e4e4e4;'
-    + 'border-radius: 0;'
-    + '-webkit-appearance: none;'
-    //+ 'border: 0;'
-    + 'outline: none;'
-   // + 'cursor:pointer;'
-    + 'background-color:#EEE;'
-    + 'font-family:"open sans";'
-    + '}'
-    + ''
-    + 'input[type=text]::-moz-selection { background: transparent; }'
-    + 'input[type=text]::selection { background: transparent; }'   
-    + 'input[type=text]::-webkit-selection { background: transparent; }' 
-    + ''
+   //  + 'select {'
+   //  + 'width: 150px;'
+   //  + 'padding: 5px 5px;'
+   //  + 'font-size: 16px;'
+   //  + 'color:#666666;'
+   //  + 'border: solid 2px #e4e4e4;'
+   //  + 'border-radius: 0;'
+   //  + '-webkit-appearance: none;'
+   //  //+ 'border: 0;'
+   //  + 'outline: none;'
+   // // + 'cursor:pointer;'
+   //  + 'background-color:#EEE;'
+   //  + 'font-family:"open sans";'
+   //  + '}'
+   //  + ''
+   //  + 'input[type=text]::-moz-selection { background: transparent; }'
+   //  + 'input[type=text]::selection { background: transparent; }'   
+   //  + 'input[type=text]::-webkit-selection { background: transparent; }' 
+   //  + ''
     + 'canvas { '
    // + 'cursor:pointer;'
     + 'border-radius:0px;'
@@ -3953,10 +4027,6 @@ keyboard.prototype.release = function(e) {
 
 
 
-
-
-
-
 },{"../core/widget":3,"../utils/drawing":5,"../utils/math":6,"util":51}],21:[function(require,module,exports){
 var math = require('../utils/math');
 var drawing = require('../utils/drawing');
@@ -3972,12 +4042,10 @@ var widget = require('../core/widget');
 	<canvas nx="matrix" style="margin-left:25px"></canvas>
 */
 
-
 var matrix = module.exports = function (target) {
 	this.defaultSize = { width: 100, height: 100 };
 	widget.call(this, target);
 	
-
 	/** @property {integer}  row   Number of rows in the matrix
 	```js
 		matrix1.row = 2;
@@ -9690,3 +9758,6 @@ Y.prototype.load=function(a){function b(){if(e["__mti_fntLst"+c]){var d=e["__mti
 
 
 },{}]},{},[1]);
+
+window.nx.loaded = true; 
+

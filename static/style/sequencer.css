@@ -12,21 +12,45 @@ $aiRed : rgb(249, 35, 35);
 
 $blackKeyMargin : $borderWidth + 2px;
 
+#keyboard {
+	position : absolute;
+	width : 100%;
+}
 
 #sequencer {
+
+
 	position: absolute;
 	width: calc(100% - 2 * #{$borderWidth});
 	user-select: none;
 	cursor: pointer;
 
-	.step {
+
+	.seqButton {  
 		position : absolute;
 		height: calc(100% - 2 * #{$borderWidth});
 		width: calc(100%/16);
-		left: 0px;
-		top: 0px;
-		user-select: none;
+		background-color: #333333; 
 
+	}
+
+	.seqButton.green{			
+		background-color: $blue;
+	}
+	
+	&.hover{
+		background-color: $blue;
+	}
+
+	.step {
+		position : absolute;
+		user-select: none;
+		opacity : 0.1;
+		background-color: #ff0000;
+
+		.stepOn {
+			background-color: $blue;
+		}
 		#fill {
 			position: absolute;
 			top: 0px;

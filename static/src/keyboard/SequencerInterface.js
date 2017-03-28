@@ -47,7 +47,7 @@ class SequencerInterface extends events.EventEmitter{
 		/**
 		 * The piano interface
 		 */
-		this._keyboardInterface = new SequencerElement(container, 48, 2)
+		this._keyboardInterface = new SequencerElement(container, 48, 2, {rows: 12, columns: 16})
 		this._keyboardInterface.on('keyDown', (note) => {
 			this.keyDown(note)
 			this._emitKeyDown(note)
@@ -56,7 +56,7 @@ class SequencerInterface extends events.EventEmitter{
 			this.keyUp(note)
 			this._emitKeyUp(note)
 		})
-
+		
 		window.addEventListener('resize', this._resize.bind(this))
 		//size initially
 		this._resize()
