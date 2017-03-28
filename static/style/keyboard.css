@@ -3,9 +3,9 @@
 $borderWidth : 4px;
 $borderColor: rgb(215, 215, 215);
 $blackColor: green;
-$whiteColor: rgb(134, 134, 134);
-$blackHover : #aaa;
-$whiteHover : #aaa;
+$whiteColor: rgb(170, 170, 170);
+$blackHover : #FFF;
+$whiteHover : #FFF;
 
 $blackKeyMargin : $borderWidth + 2px;
 
@@ -16,26 +16,13 @@ $blackKeyMargin : $borderWidth + 2px;
     width: 60%;
 	user-select: none;
 	cursor: pointer;
+    z-index: 100;
 
 	.key {
 		position: absolute;
 		height: calc(100% - 2 * #{$borderWidth});
+		width: calc(100% - 2 * #{$borderWidth});
         border-radius: 50%;
-		/*width: 10%;*/
-		/*left: 0px;
-		top: 0px;
-		user-select: none;*/
-
-		/*&.black {
-			z-index: 1;
-			height: 50%;
-
-			#fill {
-				background-color: $blackColor;
-				width: calc(100% - #{$blackKeyMargin * 2});
-				left: $blackKeyMargin;
-			}
-		}*/
 
 		&.white {
 			z-index: 0;
@@ -59,8 +46,7 @@ $blackKeyMargin : $borderWidth + 2px;
 			top: 0px;
 			left: 0px;
 			width: 100%;
-			height: 100%;/*
-			border: $borderWidth solid $borderColor;*/
+			height: 100%;
 			pointer-events: none;
 
 		}

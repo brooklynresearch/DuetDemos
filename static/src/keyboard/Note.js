@@ -29,10 +29,12 @@ export class Note{
 		this.rollNote = new RollNote(container, ai)
 	}
 	noteOff(){
+        setTimeout(() => {
 		this.element.classList.remove('active')
 		this.rollNote.noteOff()
 		setTimeout(() => {
 			this.element.remove()
 		}, 1000)
+        }, 4000)
 	}
 }

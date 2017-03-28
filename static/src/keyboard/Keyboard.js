@@ -47,7 +47,7 @@ class Keyboard extends events.EventEmitter{
 		/**
 		 * The piano interface
 		 */
-		this._keyboardInterface = new KeyboardElement(container, 60, 1) //LOWEST NOTE AND HOW MANY OCTAVES
+		this._keyboardInterface = new KeyboardElement(container, 24, 7) //LOWEST NOTE AND HOW MANY OCTAVES
 		this._keyboardInterface.on('keyDown', (note) => {
 			this.keyDown(note)
 			this._emitKeyDown(note)
@@ -59,9 +59,11 @@ class Keyboard extends events.EventEmitter{
 
         // RESIZE KEYBOARD
         //
-/*		window.addEventListener('resize', this._resize.bind(this))
+		/*window.addEventListener('resize', this._resize.bind(this))
 		//size initially
 		this._resize()*/
+        /*window.addEventListener('resize', this.resizing.bind(this))
+        this.resizing()*/
 
 		//make sure they don't get double clicked
 		this._currentKeys = {}
@@ -141,6 +143,7 @@ class Keyboard extends events.EventEmitter{
 	_resize(){
 		const keyWidth = 24
 		let octaves = Math.round((window.innerWidth / keyWidth) / 12)
+        //let notes = Math.round((window.innerHeight / keyWidth) / 12)
 		octaves = Math.max(octaves, 2)
 		octaves = Math.min(octaves, 7)
 		let baseNote = 48
@@ -149,6 +152,10 @@ class Keyboard extends events.EventEmitter{
 		}
 		this._keyboardInterface.resize(baseNote, octaves)
 	}
+    
+    /*resizing(){
+        const 
+    }*/
 
 	activate(){
 		container.classList.add('focus')

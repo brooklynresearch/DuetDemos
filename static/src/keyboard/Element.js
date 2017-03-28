@@ -22,6 +22,7 @@ import {Note} from 'keyboard/Note'
 /*
 const offsets = [0, 0.5, 1, 1.5, 2, 3, 3.5, 4, 4.5, 5, 5.5, 6]*/
 const offsets = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+const offsetsOctaves = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
 class KeyboardElement extends events.EventEmitter {
 
@@ -52,34 +53,41 @@ class KeyboardElement extends events.EventEmitter {
 		this._keys = {}
 		// clear the previous ones
 		this._container.innerHTML = ''
-		// each of the keys
 		/*const keyWidth = (1 / 7) / octaves*/
-		const keyWidth = (1 / 7) / octaves
-		for (let i = lowest; i < lowest + octaves * 12; i++){
-			let key = document.createElement('div')
-			key.classList.add('key')
-			/*let isSharp = ([1, 3, 6, 8, 10].indexOf(i % 12) !== -1)
-			key.classList.add(isSharp ? 'black' : 'white')*/
-			key.classList.add('white')
-			this._container.appendChild(key)
-			// position the element
-			
-			let noteOctave = Math.floor(i / 12) - Math.floor(lowest / 12)
-			/*let offset = offsets[i % 12] + noteOctave * 7*/
-			let offset = offsets[i % 12] + noteOctave * 12
-			key.style.width = `${keyWidth * 80}%`
-			key.style.left = `${offset * keyWidth * 90}%`
-			key.id = i.toString()
-			key.setAttribute('touch-action', 'none')
+        const keyWidth = 1
+        const keyHeight = 1
+        
+        for(let j = 0; j < octaves; j++){
+            var keyLeft = `${j*keyWidth*100}%`
+            
+            for (let i = lowest + j * 12; i < lowest + (j+1) * 12; i++){
+                let key = document.createElement('div')
+                key.classList.add('key')
+                /*let isSharp = ([1, 3, 6, 8, 10].indexOf(i % 12) !== -1)
+                key.classList.add(isSharp ? 'black' : 'white')*/
+                key.classList.add('white')
+                this._container.appendChild(key)
+                // position the element
+/*              let noteOctave = Math.floor(i / 12) - Math.floor(lowest / 12)*/
+                let offset = offsets[i % 12] /*+ noteOctave * 12*/
+                key.style.top = `${offset * keyHeight * 100}%`
+                key.style.left = keyLeft
+                /*key.style.width = `${keyWidth*70}%`*/
+                /*// NEXT OCTAVE
+                key.style.left = `${offset * keyWidth * 90}%`*/
 
-			const fill = document.createElement('div')
-			fill.id = 'fill'
-			key.appendChild(fill)
-			
-			this._bindKeyEvents(key)
-			this._keys[i] = key
+                key.id = i.toString()
+                key.setAttribute('touch-action', 'none')
 
-		}
+                const fill = document.createElement('div')
+                fill.id = 'fill'
+                key.appendChild(fill)
+
+                this._bindKeyEvents(key)
+                this._keys[i] = key
+
+            }
+        }
 	}
 
 	_absorbEvent(event) {
@@ -130,7 +138,7 @@ class KeyboardElement extends events.EventEmitter {
 	}
 
 	keyDown(noteNum, ai=false){
-		// console.log('down', noteNum, ai)
+		console.log('down', noteNum, ai)
 		if (this._keys.hasOwnProperty(noteNum)){
 			const key = this._keys[noteNum]
 			key.classList.remove('hover')
@@ -146,12 +154,12 @@ class KeyboardElement extends events.EventEmitter {
 	}
 
 	keyUp(noteNum, ai=false){
-		// console.log('up', noteNum, ai)
+		console.log('up', noteNum, ai)
 		if (this._keys.hasOwnProperty(noteNum)){
 			const noteArray = ai ? this._aiNotes : this._notes
 			if (!(noteArray[noteNum] && noteArray[noteNum].length)){
 				// throw new Error('note off without note on')
-				// setTimeout(() => this.keyUp.bind(this, noteNum, ai), 100)
+				 //setTimeout(() => this.keyUp.bind(this, noteNum, ai), 100)
 				console.warn('note off before note on')
 			} else {
 				noteArray[noteNum].shift().noteOff()

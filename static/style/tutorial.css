@@ -2,12 +2,11 @@
 
 #tutorial {
 	position: absolute;
-	top: 10%;
-	left: 50%;
+	top: 2%;
+	left: 3%;
 	height: 50px;
-	width: 80%;
-	min-width: 300px;
-	transform: translate(-50%, -50%);
+	width: 25%;
+	min-width: 440px;
 	color: white;
 	font-family: $font-family;
 	text-align: center;

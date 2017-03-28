@@ -18,7 +18,7 @@ const THREE = require('three')
 
 const geometry = new THREE.PlaneGeometry( 1, 1, 1 )
 const material = new THREE.MeshBasicMaterial( {color: 0x1FB7EC, side: THREE.DoubleSide} )
-const aiMaterial = new THREE.MeshBasicMaterial( {color: 0xFFB729, side: THREE.DoubleSide} )
+const aiMaterial = new THREE.MeshBasicMaterial( {color: 0xFFB7FF, side: THREE.DoubleSide} )
 
 window.zero = new THREE.Vector3(0, 0, 0)
 
@@ -82,7 +82,7 @@ class RollClass {
 			plane.position.z = 0
 			plane.position.x = box.left  + margin + width / 2
 			plane.position.y = this._element.clientHeight + this._camera.position.y + initialScaling / 2
-			this._scene.add(plane)
+			//this._scene.add(plane)
 
 			this._currentNotes[selector].push({
 				plane : plane,
@@ -99,7 +99,7 @@ class RollClass {
 			const plane = note.plane
 			const position = note.position
 			// get the distance covered
-			plane.scale.y = Math.max(this._camera.position.y - position, 5)
+			//plane.scale.y = Math.max(this._camera.position.y - position, 5)
 			plane.position.y = this._element.clientHeight + position + plane.scale.y / 2
 		}
 	}
