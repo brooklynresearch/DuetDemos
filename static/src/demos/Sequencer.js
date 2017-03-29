@@ -162,6 +162,7 @@ export class Sequencer {
 
      changeBPM(event) {
         Tone.Transport.bpm.value = parseInt(event.target.value);
+        document.getElementById("display-bpm").innerHTML = event.target.value
      }
 
      toggleSeq(event) {
@@ -208,7 +209,7 @@ export class Sequencer {
         } else if (index > 11){
             index = 11;
         }
-        this._aiNotes[index].time = (time - this.noteDuration);
+        this._aiNotes[index].time = time - (this.noteDuration + 0.35);
         this._aiNotes[index].enabled = true;
         console.log(this._aiNotes[index].time);
     }      
