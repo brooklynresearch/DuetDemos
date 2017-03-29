@@ -1,15 +1,15 @@
 {{> navPartial }}
 
-<div> {{ title }} </div>
+<div class="demo-title"> {{ title }} </div>
 
-{{> chngModelPartial }}
-
+<div id="quant-opts">
 <label>Backing Beat</label></br>
 <select id="change-beat">
     <option value="basic" selected>Basic Beat</option>
     <option value="samba">Samba Beat</option>
     <option value="none">None</option>
 </select>
+</div>
 
 {{> chngBpmPartial }}
 

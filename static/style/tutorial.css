@@ -1,5 +1,38 @@
 @import 'common.scss';
 
+button {
+	-moz-box-shadow:inset 0px 34px 0px -15px #222222;
+	-webkit-box-shadow:inset 0px 34px 0px -15px #222222;
+	box-shadow:inset 0px 34px 0px -15px #222222;
+	background-color: #222222;
+	border:1px solid #ffffff;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:9px 23px;
+	text-decoration:none;
+	text-shadow:0px -1px 0px #121111;
+
+}
+
+#params {
+    display: inline;
+    position: relative;
+    right: 50%;
+}
+
+.button-bar {
+    display: inline-block;
+}
+
+#quant-opts {
+    position: relative;
+    right: 50%;
+}
+
 #tutorial {
 	position: absolute;
 	top: 10%;
@@ -24,6 +57,7 @@
 		height: 100%;
 
 		}
+
 	}
 
 	.disappear {
