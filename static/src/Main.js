@@ -34,12 +34,13 @@ export class Controller {
         this.container.id = 'container'
         document.body.appendChild(this.container)
 
-        setInterval(function() { // THERE MUST BE A BETTER WAY
+        var wait = setInterval(function() { // THERE MUST BE A BETTER WAY
             var elem = document.getElementById("change-model")
             if (elem) {
                 elem.addEventListener("change", Controller.changeModel)
+                clearInterval(wait)
             }
-        }, 500)
+        }, 200)
     }
 
     start() {
@@ -100,22 +101,21 @@ export class Controller {
             'polyphonic': 'polyphony_rnn'
         }
 
-        console.log("CALLING changemodel")
-            fetch('/model', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                model: this.models[event.target.value]
-              })
-            })
-            .then(function(res){ 
-                console.log(res);
-            })
-            .catch(function(error){
-                console.log('Request failed', error)
-            })
+        fetch('/model', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: this.models[event.target.value]
+          })
+        })
+        .then(function(res){ 
+            console.log(res);
+        })
+        .catch(function(error){
+            console.log('Request failed', error)
+        })
     }
 }
 var app = new Controller();

@@ -30,6 +30,14 @@ export class Pentatonic extends events.EventEmitter{
 
     start() { // Start listening
         this.keyboard.activate()
+
+        var interruptSelect = document.getElementById("change-interrupt")
+        interruptSelect.addEventListener("change", this.changeInterrupt.bind(this))
+
+        var waitSelect = document.getElementById("change-wait")
+        waitSelect.addEventListener("change", this.changeWait.bind(this))
+
+
         // Intercept regular note and make it all pentatonic-like
         this.keyboard.on('keyDown', (note) => {
             this.makePenta(note, (newNote) => {
@@ -79,4 +87,12 @@ export class Pentatonic extends events.EventEmitter{
             callback(note)
         }
     }
+
+     changeInterrupt(event) {
+        this.ai.setInterrupt(parseInt(event.target.value))
+     }
+
+     changeWait(event) {
+        this.ai.setWait(parseInt(event.target.value))
+     }
 }
