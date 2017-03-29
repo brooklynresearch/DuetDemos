@@ -15,9 +15,9 @@ We will refer to the various demos within as we go through the topics, but on th
 
 ## INSTALLATION
 
-A.I. Duet only works with [Python 2.7](https://www.python.org/download/releases/2.7/).
+A.I. Duet only works with [Python 2.7](https://www.python.org/download/releases/2.7/). It also requires npm.
 
-If you already have a Python 2.7 environment setup, install all of the server dependencies and start the server by typing the following in the terminal:
+If you already have a Python 2.7 environment setup (a virtual environment is highly recommended), install all of the server dependencies and start the server by typing the following in the terminal:
 
 ```bash
 cd server
