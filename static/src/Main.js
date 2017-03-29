@@ -39,7 +39,33 @@ export class Controller {
             if (elem) {
                 elem.addEventListener("change", Controller.changeModel)
                 clearInterval(wait)
-            }
+                }
+            jQuery(function() {
+
+                    function initInfo() {
+                        
+                        $('#info-icon').click(function(event) {
+                            console.log("calling toggle")
+                            $('#info-title,#info-body').toggle('fast')
+                        });
+
+                        
+
+                    }
+                    
+
+                    function init() {
+                        initInfo();
+                        console.log("calling init")
+
+                    }
+
+
+                    init();
+
+                    });
+
+
         }, 200)
     }
 
@@ -120,4 +146,5 @@ export class Controller {
 }
 var app = new Controller();
 app.start();
+
 
