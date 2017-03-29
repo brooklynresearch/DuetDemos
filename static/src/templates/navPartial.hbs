@@ -1,16 +1,23 @@
-<form method="post" style="margin-bottom: 100px;">
-  <fieldset>
+<form method="post">
+  <fieldset class="button-bar">
     <legend>Demos</legend>
     <button type="submit" formaction="/#arpeggiator">Arpeggiator</button>
     <button type="submit" formaction="/#default">Default</button>
     <button type="submit" formaction="/#midiplayer">Midi Player</button>
     <button type="submit" formaction="/#pentatonic">Pentatonic</button>
     <button type="submit" formaction="/#quantizer">Quantizer</button>
-  </fieldset>
-  <fieldset>
-    <label>Interrupt</label></br>
+    <button type="submit" formaction="/#sequencer">Sequencer</button>
+  </fieldset> </br>
+  <fieldset id="params">
+    {{> chngModelPartial }}
+    </br>
+    </br>
+    </br>
+    <div>
+    <label>AI Interrupt</label></br>
     <input id="change-interrupt" type="range"  min="0" max="50000" step="200" value="30000"/></br>
-    <label>Wait</label></br>
+    <div>
+    <label>AI Wait</label></br>
     <input id="change-wait" type="range"  min="0" max="1000" step="100" value="600"/></br>
   </fieldset>
 </form>

@@ -29,7 +29,7 @@ class Glow {
 
 		this._userGlow = document.createElement('div')
 		this._userGlow.id = 'user'
-		this._element.appendChild(this._userGlow)
+		//this._element.appendChild(this._userGlow)
 
 		this._aiTime = -1
 

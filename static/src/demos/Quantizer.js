@@ -166,6 +166,7 @@ export class Quantizer {
 
      changeBpm(event) {
         Tone.Transport.bpm.value = parseInt(event.target.value)
+        document.getElementById("display-bpm").innerHTML = event.target.value
      }
 
      changeInterrupt(event) {
