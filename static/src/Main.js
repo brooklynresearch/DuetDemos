@@ -18,7 +18,6 @@ import {Tutorial} from 'ai/Tutorial'
 import {Pentatonic} from 'demos/Pentatonic'
 import {BlankDemo} from 'demos/BlankDemo'
 import {Arpeggiator} from 'demos/Arpeggiator'
-import {FuckingAround} from 'demos/FuckingAround'
 import {Sequencer} from 'demos/Sequencer'
 import {Quantizer} from 'demos/Quantizer'
 import {ServerDemo} from 'demos/ServerDemo'
@@ -86,12 +85,7 @@ export class Controller {
                 arpeggiator.start()
                 break;
 
-            case "#fuckingAround": // FUCKING AROUND
-                const fuckingAround = new FuckingAround(this.container)
-                fuckingAround.start()
-                break;
-
-            case "#sequencer": // FUCKING AROUND
+            case "#sequencer": // SEQUENCER
                 const sequencer = new Sequencer(this.container)
                 sequencer.start()
                 break;
