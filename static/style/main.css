@@ -2,6 +2,7 @@
 $keyboardHeight : 100px;
 $sequencerHeight : 300px;
 $bottomHeight : 30px;
+$borderWidth : 2px;
 
 body, #container{
 	width: 100%;
@@ -17,6 +18,14 @@ body, #container{
 		bottom: $bottomHeight;
 		left: 0px;
 		height: $keyboardHeight;
+	}
+
+	#aiSequenceIndicator {
+		position: absolute;
+		bottom: $bottomHeight;
+		left: 0;
+		width: calc(20% - 2 * #{$borderWidth});
+		height: $sequencerHeight;
 	}
 
 	#beatCursor {

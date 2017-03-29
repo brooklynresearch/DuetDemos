@@ -92,7 +92,7 @@ class SequencerElement extends events.EventEmitter {
 	    else {
 	    	//var noteNum = (i + 48);
 	    	//this.emit('keyDown', noteNum)
-	      	this._ctx.fillStyle="rgba(249, 187, 45, 1)";
+	      	this._ctx.fillStyle="rgba(30, 183, 235, 1)";
 	    }
 	    this._ctx.fillRect(matrix[i].x,matrix[i].y,matrix[i].width,matrix[i].height);
 	  }
