@@ -12,9 +12,12 @@ export class BlankDemo {
         this.sound.load()
         this.glow = new Glow(container)
 
+        var infoText =
+        "This is the default demo. Use this to play around with changing the underlying models and the wait and interrupt parameters for the AI. Higher values on the AI interrupt slider means the AI cuts in less abruptly."
+
         var demoTemplate = require("templates/blankdemo.hbs");
         this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Default Demo"});
+        this.element.innerHTML = demoTemplate({title: "Default Demo", info: infoText})
         this.element.id = 'tutorial'
         container.appendChild(this.element)
     }

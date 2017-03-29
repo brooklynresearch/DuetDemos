@@ -15,9 +15,12 @@ export class Sequencer {
 
         this.noteDuration = 1.9;
 
+        var infoText =
+        "Sequencer demo is a test of giving users different input for musical expression which does not rely on a user’s ability to play an instrument, but instead gives the user the ability to compose to see how the AI responds.  With a keyboard and AI there is much more of a one to one relationship, where with the sequencer a user can easily adjust the notes being played and really explore how the AI is functioning against different note and timing combinations.  Once a user has created a sequence they like, they can also play another midi instrument on top of both the AI and sequencer."
+
         var demoTemplate = require("templates/sequencer.hbs");
         this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Sequencer"});
+        this.element.innerHTML = demoTemplate({title: "Sequencer", info: infoText});
         this.element.id = 'tutorial'
         container.appendChild(this.element)
         
@@ -159,6 +162,7 @@ export class Sequencer {
 
      changeBPM(event) {
         Tone.Transport.bpm.value = parseInt(event.target.value);
+        document.getElementById("display-bpm").innerHTML = event.target.value
      }
 
      toggleSeq(event) {
@@ -205,7 +209,7 @@ export class Sequencer {
         } else if (index > 11){
             index = 11;
         }
-        this._aiNotes[index].time = (time - this.noteDuration);
+        this._aiNotes[index].time = time - (this.noteDuration + 0.35);
         this._aiNotes[index].enabled = true;
         console.log(this._aiNotes[index].time);
     }      

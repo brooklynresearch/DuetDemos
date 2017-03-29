@@ -13,6 +13,33 @@ As part of the research, we created a series of small demos based off of the ori
 
 We will refer to the various demos within as we go through the topics, but on the demos themselves there is an information icon that the user can press to read information about each each demo.
 
+## INSTALLATION
+
+A.I. Duet only works with [Python 2.7](https://www.python.org/download/releases/2.7/). It also requires npm.
+
+If you already have a Python 2.7 environment setup (a virtual environment is highly recommended), install all of the server dependencies and start the server by typing the following in the terminal:
+
+```bash
+cd server
+pip install -r requirements.txt
+```
+
+If it _did_ install tensorflow and magenta successfully, you can run the server by typing:
+
+```bash
+python server.py
+```
+
+Then to build and install the front-end Javascript code, first make sure you have [Node.js](https://nodejs.org) 6 or above and [webpack](https://webpack.github.io/) installed. And then install of the dependencies of the project and build the code by typing the following in the terminal: 
+
+```bash
+cd static
+npm install
+webpack -p
+```
+
+You can now play with A.I. Duet at [localhost:8080](http://localhost:8080) by running python server.py in the server folder
+
 ## General Dev Stuff
 + If you need to install a new node package for the frontend, make sure to use the --save flag so it gets added
 to the package.js file for the rest of the team.

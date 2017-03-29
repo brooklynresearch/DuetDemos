@@ -85,12 +85,7 @@ export class Controller {
                 arpeggiator.start()
                 break;
 
-            case "#fuckingAround": // FUCKING AROUND
-                const fuckingAround = new FuckingAround(this.container)
-                fuckingAround.start()
-                break;
-
-            case "#sequencer": // FUCKING AROUND
+            case "#sequencer": // SEQUENCER
                 const sequencer = new Sequencer(this.container)
                 sequencer.start()
                 break;

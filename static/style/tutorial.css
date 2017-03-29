@@ -26,6 +26,13 @@ button {
     z-index: 100;
 }
 
+#seq-opt {
+	display: inline;
+	position: absolute;
+	top: 200%;
+	left: 90%;
+}
+
 .button-bar {
     display: inline-block;
     z-index: -100;
