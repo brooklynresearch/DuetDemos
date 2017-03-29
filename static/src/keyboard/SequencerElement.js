@@ -17,7 +17,6 @@
 import events from 'events'
 import 'style/sequencer.css'
 import 'pepjs'
-import 'jquery'
 import Tone from 'Tone/core/Tone'
 import {Roll} from 'roll/Roll'
 import {Note} from 'keyboard/Note'
