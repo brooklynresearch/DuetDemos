@@ -72,10 +72,13 @@ export class Sequencer {
         }
         
         //console.log(this.sequencer._keyboardInterface._matrix);
-
-        this.loop = new Tone.Sequence((time, count) => {
+        this.aiLoop = new Tone.Sequence((time, count) => {
             this.checkTriggerTiming();
             this.renderAIIndicator();
+        }, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], '16n');
+
+        this.loop = new Tone.Sequence((time, count) => {
+
             let matrix = this.sequencer._keyboardInterface._matrix;
             this.indicatorCtx.clearRect(0, 0, this.indicatorCanvas.width, this.indicatorCanvas.height);
             for(var beat = 0; beat <16; beat++){
@@ -87,7 +90,7 @@ export class Sequencer {
                         if (matrix[beat * 12 + note].enabled == true){
                             //this.sound.keyDown(note + 48);
                             //this.ai.keyDown(note + 48);
-                            this.sequencer.emit('keyDown', (note + 48), time + now);
+                            this.sequencer.emit('keyDown', (note + 48), time +this.noteDuration + now);
                             this.sequencer.emit('keyUp', (note + 48), time + this.noteDuration + now)
                         } else {
                             //this.sound.keyUp(note + 48);
@@ -104,7 +107,19 @@ export class Sequencer {
 
         this.sequencer.activate()
         Tone.Transport.start()
-        this.loop.start('1m');
+        this.aiLoop.start();
+
+        var interruptSelect = document.getElementById("change-interrupt")
+        interruptSelect.addEventListener("change", this.changeInterrupt.bind(this))
+
+        var waitSelect = document.getElementById("change-wait")
+        waitSelect.addEventListener("change", this.changeWait.bind(this))
+
+        var bpmSelect = document.getElementById("change-bpm")
+        bpmSelect.addEventListener("change", this.changeBPM.bind(this))
+
+        var sequencerSelect = document.getElementById("toggle-seq");
+        sequencerSelect.addEventListener("change", this.toggleSeq.bind(this));
         
         // Start listening
         this.sequencer.on('keyDown', (note) => {
@@ -133,6 +148,27 @@ export class Sequencer {
             this.glow.ai(time)
         })
     }
+
+     changeInterrupt(event) {
+        this.ai.setInterrupt(parseInt(event.target.value))
+     }
+
+     changeWait(event) {
+        this.ai.setWait(parseInt(event.target.value))
+     }
+
+     changeBPM(event) {
+        Tone.Transport.bpm.value = parseInt(event.target.value);
+     }
+
+     toggleSeq(event) {
+        console.log(event.target.checked);
+        if(event.target.checked == false){
+            this.loop.stop();
+        }else if(event.target.checked = true){
+            this.loop.start();
+        }
+     }
 
     renderAIIndicator(){
         this.aiIndicatorCtx.clearRect(0, 0, this.aiIndicatorCanvas.width, this.aiIndicatorCanvas.height);

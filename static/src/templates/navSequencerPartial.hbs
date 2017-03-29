@@ -1,0 +1,41 @@
+<link rel="stylesheet" type="text/css" href="main.css">
+<form method="post" style="margin-bottom: 100px;">
+  <fieldset>
+    <legend>Demos</legend>
+    <button type="submit" formaction="/#arpeggiator">Arpeggiator</button>
+    <button type="submit" formaction="/#default">Default</button>
+    <button type="submit" formaction="/#midiplayer">Midi Player</button>
+    <button type="submit" formaction="/#pentatonic">Pentatonic</button>
+    <button type="submit" formaction="/#quantizer">Quantizer</button>
+    <button type="submit" formaction="/#sequencer">Sequencer</button>
+  </fieldset>
+  <fieldset>
+    <table style="width:100%">
+      <tr>
+        <td>
+          <label>Interrupt</label></br>
+          <input id="change-interrupt" type="range"  min="0" max="50000" step="200" value="30000"/></br>
+        </td>
+        <td colspan="2">
+          <label>BPM</label></br>
+          <input id="change-bpm" type="range"  min="40" max="240" step="1" value="120"/></br>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Wait</label></br>
+          <input id="change-wait" type="range"  min="0" max="1000" step="100" value="600"/></br>
+        </td>
+        <td>
+          <label>Sequencer On/Off</label>
+        </td>
+        <td>
+          <label class="switch">
+            <input id="toggle-seq" type="checkbox">
+            <div class="slider"></div>
+          </label>
+        </td>
+      </tr>
+    </table>
+  </fieldset>
+</form>
