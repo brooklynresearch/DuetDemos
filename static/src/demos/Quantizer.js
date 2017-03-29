@@ -92,8 +92,17 @@ export class Quantizer {
         }, '16n')
 
 
-        var elem = document.getElementById("change-beat")
-        elem.addEventListener("change", this.changeBeat.bind(this))
+        var beatSelect = document.getElementById("change-beat")
+        beatSelect.addEventListener("change", this.changeBeat.bind(this))
+
+        var bpmSelect = document.getElementById("change-bpm")
+        bpmSelect.addEventListener("change", this.changeBpm.bind(this))
+
+        var interruptSelect = document.getElementById("change-interrupt")
+        interruptSelect.addEventListener("change", this.changeInterrupt.bind(this))
+
+        var waitSelect = document.getElementById("change-wait")
+        waitSelect.addEventListener("change", this.changeWait.bind(this))
 
         this.basicBeat.start('1m')
         this.keyboard.activate()
@@ -155,4 +164,17 @@ export class Quantizer {
         }
 
     }
+
+     changeBpm(event) {
+        Tone.Transport.bpm.value = parseInt(event.target.value)
+     }
+
+     changeInterrupt(event) {
+        this.ai.setInterrupt(parseInt(event.target.value))
+     }
+
+     changeWait(event) {
+        this.ai.setWait(parseInt(event.target.value))
+     }
 }
+

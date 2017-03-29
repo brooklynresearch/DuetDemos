@@ -94,6 +94,14 @@ class AI extends events.EventEmitter{
 			}
 		}
 	}
+
+    setInterrupt(newValue) {
+        this.INTERRUPT = newValue
+    }
+
+    setWait(newValue) {
+        this.WAIT = newValue
+    }
 }
 
 export {AI}

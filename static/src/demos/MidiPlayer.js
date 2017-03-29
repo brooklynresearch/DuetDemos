@@ -34,32 +34,36 @@ export class MidiPlayer extends events.EventEmitter{
         this.ai = new AI()
 
         this.midiNotes = [];
+        this.sequenceLength = 63
+        this.sequencePos = 0
 
-        var midiTemplate = require("templates/midiplayer.hbs");
+        this.trackNames = {
+            "haydn_8_1.mid": "Sonate Hoboken XVI:8 1. Satz",
+            "schubert_935_4.mid": "Piano right",
+            "mozart_545_1.mid": "Sonate KV 545 1. Satz"
+        }
+
+        var midiTemplate = require("templates/midiplayer.hbs")
         this.element = document.createElement('div')
-        this.element.innerHTML = midiTemplate({title: "Midi Player"});
+        this.element.innerHTML = midiTemplate({title: "Midi Player"})
         this.element.id = 'tutorial'
         container.appendChild(this.element)
     }
 
     start() {
         this.keyboard.activate()
-        var that = this;
-        MidiConvert.load("midi/schubert_935_4.mid", function(midi) {
-            console.log("MIDI FILE LOADED", midi);
 
-            Tone.Transport.bpm.value = midi.header.bpm;
-            Tone.Transport.timeSignature = midi.timeSignature;
+        var interruptSelect = document.getElementById("change-interrupt")
+        interruptSelect.addEventListener("change", this.changeInterrupt.bind(this))
 
-            var notes = midi.get("Piano right").notes;
-            var i = 0;
-            notes.forEach(function(event) {
-                if (i <= 63) {
-                    that.midiNotes.push({note: event.midi, time: event.time, duration: event.duration});
-                }
-                i++;
-            });
-        });
+        var waitSelect = document.getElementById("change-wait")
+        waitSelect.addEventListener("change", this.changeWait.bind(this))
+
+        this.midiSelect = document.getElementById('change-midi')
+        this.midiSelect.onchange = this.loadMidi.bind(this)
+
+        this.playBtn = document.getElementById('start-btn')
+        this.playBtn.onclick = this.playMidi.bind(this)
 
         this.on('keyDown', (note, time) => {
             this.sound.keyDown(note, time)
@@ -104,40 +108,48 @@ export class MidiPlayer extends events.EventEmitter{
             this.keyboard.keyUp(note, time, true)
             this.glow.ai(time)
         })
-
-         //setInterval(function() {
-                that._promiseTimeout(400).then(() => {
-                    //this._addText('When you play a few notes', 'user', 4200)
-                    return that._promiseTimeout(500)
-                }).then(() => {
-                    console.log("NOTES", that.midiNotes);
-                    const now = Tone.now()
-                    that.midiNotes.forEach((event) => {
-                        that.emit('keyDown', event.note, event.time + now)
-                        that.emit('keyUp', event.note, event.time + event.duration * 0.9 + now)
-                    })
-                    return that._promiseTimeout(500)
-                }).then(() => {
-                    that._sendUserMelody()
-                    return that._promiseTimeout(500)
-                }).then(() => {
-                    //this._addText('the computer will respond to what you play', 'ai', 5000)
-                })
-        //}, 25000);
     }
 
-    _promiseTimeout(time){
-        return new Promise(done => {
-            setTimeout(done, time)
-        })
-    }
-
-    _sendUserMelody(){
+    playMidi() {
         const now = Tone.now()
-        this.midiNotes.forEach((event) => {
-            this.emit('aiKeyDown', event.note, event.time + now)
-            this.emit('aiKeyUp', event.note, event.time + event.duration * 0.9 + now)
+        let sequenceArray = this.midiNotes.slice(this.sequencePos, this.sequencePos + this.sequenceLength+1)
+        let startTime = sequenceArray[0].time
+        sequenceArray.forEach((event, index) => {
+                this.emit('keyDown', event.note, event.time + now - startTime)
+                this.emit('keyUp', event.note, event.time + event.duration * 0.9 + now - startTime)
+
+                this.emit('aiKeyDown', event.note, event.time + now - startTime)
+                this.emit('aiKeyUp', event.note, event.time + event.duration * 0.9 + now - startTime)
+        })
+        this.sequencePos += this.sequenceLength
+        if (this.sequencePos >= this.midiNotes.length) {
+            this.sequencePos = 0 // Start over if we go too far
+        }
+    }
+
+    loadMidi(event) {
+        this.midiNotes = []
+        let filename = event.target.value
+        let that = this
+        MidiConvert.load("midi/" + filename, function(midi) {
+            console.log("MIDI FILE LOADED", midi)
+
+            Tone.Transport.bpm.value = midi.header.bpm
+            Tone.Transport.timeSignature = midi.timeSignature
+
+            let notes = midi.get(that.trackNames[filename]).notes
+            notes.forEach(function(event) {
+                that.midiNotes.push({note: event.midi, time: event.time, duration: event.duration})
+            })
         })
     }
+
+     changeInterrupt(event) {
+        this.ai.setInterrupt(parseInt(event.target.value))
+     }
+
+     changeWait(event) {
+        this.ai.setWait(parseInt(event.target.value))
+     }
 }
 
