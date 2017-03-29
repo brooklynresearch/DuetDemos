@@ -19,8 +19,7 @@ export class Arpeggiator extends events.EventEmitter{
 
         var demoTemplate = require("templates/arpeggiator.hbs");
         this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Arpeggiator"});
-        this.element.innerHTML = demoTemplate({info: infoText});
+        this.element.innerHTML = demoTemplate({title: "Arpeggiator", info: infoText})
         this.element.id = 'tutorial'
         container.appendChild(this.element)
     }

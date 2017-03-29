@@ -18,8 +18,7 @@ export class Quantizer {
 
         var demoTemplate = require("templates/quantizer.hbs");
         this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Quantizer"});
-        this.element.innerHTML = demoTemplate({info: infoText});
+        this.element.innerHTML = demoTemplate({title: "Quantizer", info: infoText})
         this.element.id = 'tutorial'
         container.appendChild(this.element)
 

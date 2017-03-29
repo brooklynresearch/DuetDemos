@@ -48,8 +48,7 @@ export class MidiPlayer extends events.EventEmitter{
 
         var midiTemplate = require("templates/midiplayer.hbs")
         this.element = document.createElement('div')
-        this.element.innerHTML = midiTemplate({title: "Midi Player"})
-        this.element.innerHTML = midiTemplate({info: infoText})
+        this.element.innerHTML = midiTemplate({title: "Midi Player", info: infoText})
         this.element.id = 'tutorial'
         container.appendChild(this.element)
     }

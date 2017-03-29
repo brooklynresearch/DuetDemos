@@ -20,8 +20,7 @@ export class Pentatonic extends events.EventEmitter{
 
         var demoTemplate = require("templates/pentatonic.hbs");
         this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Pentatonic"});
-        this.element.innerHTML = demoTemplate({info: infoText});
+        this.element.innerHTML = demoTemplate({title: "Pentatonic", info: infoText});
         this.element.id = 'tutorial'
         container.appendChild(this.element)
 
