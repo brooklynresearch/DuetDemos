@@ -21,6 +21,14 @@ export class BlankDemo {
 
     start() {
         this.keyboard.activate()
+
+        var interruptSelect = document.getElementById("change-interrupt")
+        interruptSelect.addEventListener("change", this.changeInterrupt.bind(this))
+
+        var waitSelect = document.getElementById("change-wait")
+        waitSelect.addEventListener("change", this.changeWait.bind(this))
+
+
         // Start listening
         this.keyboard.on('keyDown', (note) => {
             this.sound.keyDown(note)
@@ -46,4 +54,12 @@ export class BlankDemo {
             this.glow.ai(time)
         })
     }
+
+     changeInterrupt(event) {
+        this.ai.setInterrupt(parseInt(event.target.value))
+     }
+
+     changeWait(event) {
+        this.ai.setWait(parseInt(event.target.value))
+     }
 }
