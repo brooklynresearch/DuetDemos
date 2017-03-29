@@ -1,6 +1,8 @@
 
 $keyboardHeight : 100px;
+$sequencerHeight : 300px;
 $bottomHeight : 30px;
+$borderWidth : 2px;
 
 body, #container{
 	width: 100%;
@@ -18,6 +20,30 @@ body, #container{
 		height: $keyboardHeight;
 	}
 
+	#aiSequenceIndicator {
+		position: absolute;
+		bottom: $bottomHeight;
+		left: 0;
+		width: calc(20% - 2 * #{$borderWidth});
+		height: $sequencerHeight;
+	}
+
+	#beatCursor {
+		position: absolute;
+		bottom: calc(#{$bottomHeight + $sequencerHeight});
+		height: 30px;
+		left: 20%;
+		width: 80%;
+	}
+
+	#sequencer {
+		position: absolute;
+		bottom: $bottomHeight;
+		left: 20%;
+		width: 80%;
+		height: $sequencerHeight;
+	}
+
 	#roll {
 		width : 100%;
 		height: calc(100% - #{$keyboardHeight + $bottomHeight});
@@ -28,7 +54,7 @@ body, #container{
 
 	#glow {
 		width : 100%;
-		height: calc(100% - #{$keyboardHeight + $bottomHeight});
+		height: calc(100% - #{$sequencerHeight + $bottomHeight});
 		position: absolute;
 		top: 0px;
 		left: 0px;

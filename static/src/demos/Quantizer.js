@@ -91,7 +91,6 @@ export class Quantizer {
             }
         }, '16n')
 
-
         var beatSelect = document.getElementById("change-beat")
         beatSelect.addEventListener("change", this.changeBeat.bind(this))
 
