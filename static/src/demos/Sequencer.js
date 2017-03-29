@@ -15,9 +15,13 @@ export class Sequencer {
 
         this.noteDuration = 1.9;
 
+        var infoText =
+        "Sequencer"
+
         var demoTemplate = require("templates/sequencer.hbs");
         this.element = document.createElement('div')
         this.element.innerHTML = demoTemplate({title: "Sequencer"});
+        this.element.innerHTML = demoTemplate({info: infoText});
         this.element.id = 'tutorial'
         container.appendChild(this.element)
         
