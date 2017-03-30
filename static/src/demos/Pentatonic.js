@@ -44,7 +44,6 @@ export class Pentatonic extends events.EventEmitter{
         // Intercept regular note and make it all pentatonic-like
         this.keyboard.on('keyDown', (note) => {
             this.makePenta(note, (newNote) => {
-                //console.log("NEWNOTE", newNote)
                 this.sound.keyDown(newNote)
                 this.ai.keyDown(newNote)
                 this.glow.user()
@@ -80,13 +79,11 @@ export class Pentatonic extends events.EventEmitter{
                     closest = pNote
                 }
                 if (i === this.pentaNotes.length-1) {
-                    //console.log("NEW NOTE", closest)
                     callback(closest)
                 }
                 i++;
             })
         } else {
-            //console.log("SAME NOTE", note)
             callback(note)
         }
     }

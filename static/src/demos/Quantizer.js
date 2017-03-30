@@ -57,12 +57,9 @@ export class Quantizer {
 
         //Basic beat
         this.basicBeat = new Tone.Sequence((time, count) => {
-            //this.hatSampler.triggerAttackRelease(0,'8n')
             if ([0,4,5].indexOf(count) >= 0) {
-                //console.log("KICK");
                 this.kickSampler.triggerAttackRelease(0, '8n');
             } else if ([2,6].indexOf(count) >= 0) {
-                //console.log("SNARE");
                 this.snareSampler.triggerAttackRelease(0, '8n');
             }
         }, [0,1,2,3,4,5,6,7], '8n')
@@ -122,11 +119,9 @@ export class Quantizer {
         })
 
         this.ai.on('keyDown', (note, time) => {
-            //console.log("Queueing keydown")
             this.aiQueue.add({
                 time : time,
                 callback : (t) => {
-                    //const now = Tone.now()
                     this.sound.keyDown(note, t, true)
                     this.keyboard.keyDown(note, t, true)
                     this.glow.ai(t)
@@ -138,7 +133,6 @@ export class Quantizer {
             this.aiQueue.add({
                 time: time,
                 callback: (t) => {
-                    //const now = Tone.now()
                     this.sound.keyUp(note, t, true)
                     this.keyboard.keyUp(note, t, true)
                     this.glow.ai(t)
