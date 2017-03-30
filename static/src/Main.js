@@ -33,38 +33,13 @@ export class Controller {
         this.container.id = 'container'
         document.body.appendChild(this.container)
 
-        var wait = setInterval(function() { // THERE MUST BE A BETTER WAY
+        var wait = setInterval(function() {
             var elem = document.getElementById("change-model")
             if (elem) {
                 elem.addEventListener("change", Controller.changeModel)
+                Controller.initInfoBox()
                 clearInterval(wait)
-                }
-            jQuery(function() {
-
-                    function initInfo() {
-                        
-                        $('#info-icon').click(function(event) {
-                            console.log("calling toggle")
-                            $('#info-title,#info-body').toggle('fast')
-                        });
-
-                        
-
-                    }
-                    
-
-                    function init() {
-                        initInfo();
-                        console.log("calling init")
-
-                    }
-
-
-                    init();
-
-                    });
-
-
+            }
         }, 200)
     }
 
@@ -137,8 +112,25 @@ export class Controller {
             console.log('Request failed', error)
         })
     }
+
+    static initInfoBox() {
+        jQuery(function() {
+
+            function initInfo() {
+
+                $('#info-icon').click(function(event) {
+                    $('#info-title,#info-body').toggle('fast')
+                });
+            }
+
+            function init() {
+                initInfo();
+            }
+            init();
+        });
+    }
+
 }
 var app = new Controller();
 app.start();
-
 

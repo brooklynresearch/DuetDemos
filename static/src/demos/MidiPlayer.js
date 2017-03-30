@@ -91,13 +91,11 @@ export class MidiPlayer extends events.EventEmitter{
         this.keyboard.on('keyDown', (note) => {
             this.sound.keyDown(note)
             this.ai.keyDown(note)
-            //this.glow.user()
         })
 
         this.keyboard.on('keyUp', (note) => {
             this.sound.keyUp(note)
             this.ai.keyUp(note)
-            //this.glow.user()
         })
 
         this.ai.on('keyDown', (note, time) => {
