@@ -33,7 +33,6 @@ import tempfile
 import pretty_midi
 
 BUNDLE_NAME = 'attention_rnn'
-GRUNDLE_NAME = 'grundle_rnn'
 DEFAULT_GENERATOR = 'polyphony_rnn'
 
 
@@ -79,15 +78,6 @@ generator = melody_rnn_sequence_generator.MelodyRnnSequenceGenerator(
       steps_per_quarter=steps_per_quarter,
       bundle=bundle_file)
 
-def switch_bundle(bundle_name):
-    global GRUNDLE_NAME
-    print("switch_bundle before")
-    print(bundle_name)
-    print(GRUNDLE_NAME)
-    GRUNDLE_NAME = bundle_name
-    print("switch_bundle after")
-    print(GRUNDLE_NAME)
-    return GRUNDLE_NAME
 
 def _steps_to_seconds(steps, qpm):
     return steps * 60.0 / qpm / steps_per_quarter

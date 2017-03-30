@@ -14,7 +14,7 @@
 # limitations under the License.
 # 
 
-from predict import generate_midi, reset_generator, switch_bundle
+from predict import generate_midi, reset_generator
 import os
 from flask import send_file, request
 import pretty_midi
@@ -54,6 +54,7 @@ def model():
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    reset_generator('polyphony_rnn')
     return send_file('../static/index.html')
 
 
