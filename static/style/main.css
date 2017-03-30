@@ -92,6 +92,15 @@ body, #container{
 		left: 0px;
 		height: $keyboardHeight;
 	}
+    
+    #matrix {
+        position: absolute;
+        left: calc(50vw - 100vh * 6 / 26);
+        top: calc(100vh / 5);
+		height: calc(100vh/15);
+        width: calc(100vh/15);
+        
+    }
 
 	#aiSequenceIndicator {
 		position: absolute;

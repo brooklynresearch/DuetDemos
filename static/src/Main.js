@@ -22,6 +22,7 @@ import {Sequencer} from 'demos/Sequencer'
 import {Quantizer} from 'demos/Quantizer'
 import {ServerDemo} from 'demos/ServerDemo'
 import {MidiPlayer} from 'demos/MidiPlayer'
+import {Matrix} from 'demos/Matrix'
 import 'babel-polyfill'
 
 export class Controller {
@@ -45,6 +46,10 @@ export class Controller {
 
     start() {
         switch(this.route) {
+            case"#matrix":// SEQUENCER
+                const matrix = new Matrix(this.container)
+                matrix.start()
+                break;
             case "#tutorial": // TUTORIAL
                 const tutorial = new Tutorial(this.container)
                 tutorial.start()
