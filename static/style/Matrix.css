@@ -1,0 +1,76 @@
+@import 'common.scss';
+
+$borderWidth : 4px;
+$borderColor: rgb(215, 215, 215);
+$blackColor: green;
+$whiteColor: rgb(170, 170, 170);
+$blackHover : #FFF;
+$whiteHover : #FFF;
+
+$blackKeyMargin : $borderWidth + 2px;
+
+
+#matrix {
+	position: absolute;/*
+	width: calc(100% - 2 * #{$borderWidth});*/
+    width: 60%;
+	user-select: none;
+	cursor: pointer;
+    z-index: 100;
+
+	.key {
+		position: absolute;
+		height: calc(100% - 2 * #{$borderWidth});
+		width: calc(100% - 2 * #{$borderWidth});
+        border-radius: 50%;
+
+		&.white {
+			z-index: 0;
+
+			#fill {
+				background-color: $whiteColor;
+			}
+		}
+
+		&.white, &.black {
+
+			&.hover #fill{
+				border-color: white;
+				background-color: $blackHover;
+
+			}
+		}
+
+		#fill {
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 100%;
+			pointer-events: none;
+
+		}
+
+		.highlight {
+
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 100%;
+			pointer-events: none;
+			background-color: $blue;
+			opacity: 0;
+			transition: opacity 0.6s;
+
+			&.active {
+				opacity: 1;
+			}
+
+			&.ai {
+				background-color: $orange;
+			}
+		}
+
+	}
+}
