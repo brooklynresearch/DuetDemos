@@ -14,14 +14,19 @@ export class Arpeggiator extends events.EventEmitter{
         this.sound.load()
         this.glow = new Glow(container)
 
+        var demoTitle = "Arpeggiator"
         var infoText =
         "Arpeggiator demo is a test for allowing users to quickly and easily input more complex musical structures. Touching each key triggers an arpeggio to be played with the key pressed as the root. This makes it easy for user’s to generate a certain kind of complex structure which in turn could allow for a more complex response from the AI."
 
         var demoTemplate = require("templates/arpeggiator.hbs");
         this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Arpeggiator", info: infoText})
+        this.element.innerHTML = demoTemplate({title: demoTitle})
         this.element.id = 'tutorial'
         container.appendChild(this.element)
+
+
+        document.getElementById("info-title").innerHTML = demoTitle
+        document.getElementById("info-body").innerHTML = infoText
     }
 
     start() {

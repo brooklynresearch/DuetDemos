@@ -33,6 +33,7 @@ export class MidiPlayer extends events.EventEmitter{
         this.sound.load()
         this.ai = new AI()
 
+        var demoTitle = "Midi Player"
         var infoText =
         "Midi Player demo that plays snippets of existing and recognizable musical pieces and allowing the AI to respond in kind. The quality of the response varies greatly on the piece input and the model used."
 
@@ -48,9 +49,12 @@ export class MidiPlayer extends events.EventEmitter{
 
         var midiTemplate = require("templates/midiplayer.hbs")
         this.element = document.createElement('div')
-        this.element.innerHTML = midiTemplate({title: "Midi Player", info: infoText})
+        this.element.innerHTML = midiTemplate({title: demoTitle})
         this.element.id = 'tutorial'
         container.appendChild(this.element)
+
+        document.getElementById("info-title").innerHTML = demoTitle
+        document.getElementById("info-body").innerHTML = infoText
     }
 
     start() {

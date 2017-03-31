@@ -7,8 +7,8 @@ $borderWidth : 2px;
 #info-icon {
     /*float: right;*/
     position: absolute;
-    top: 400%;
-    right: 70%;
+    top: 0px;
+    left: 0px;
     cursor: pointer;
     display: inline-block;
     font-family: 'Open Sans', sans-serif;
@@ -32,7 +32,10 @@ $borderWidth : 2px;
 }
 
 #info-box {
-    width: 30%;
+    position: absolute;
+    top: 2%;
+    left: 0px;
+    width: 50%;
     margin: 20px 0 0 20px;
 
     z-index: 100;
@@ -42,8 +45,8 @@ $borderWidth : 2px;
 
 #info-title {
     position: absolute;
-    top: 300%;
-    right: 20%;
+    top: 0px;
+    right: 60%;
     display: none;
     font-family: 'Open Sans', sans-serif;
     font-size: 27px;
@@ -57,9 +60,8 @@ $borderWidth : 2px;
 
 #info-body {
     display: none;
-    top: 400%;
-    right: 20%;
-    left: 30%;
+    top: 0px;
+    left: 10%;
     position:  absolute;
     font-family: 'Open Sans', sans-serif;
     color: #999;
@@ -70,6 +72,8 @@ $borderWidth : 2px;
     overflow-x: hidden;
     margin: 20px 0 0 0;
     padding: 0 10px 0 0;
+    background: black;
+    opacity: 0.9;
 
     z-index: 100;
 }

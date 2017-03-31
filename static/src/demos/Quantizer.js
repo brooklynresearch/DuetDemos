@@ -13,14 +13,18 @@ export class Quantizer {
         this.sound.load()
         this.glow = new Glow(container)
 
+        var demoTitle = "Quantizer"
         var infoText =
         "Quantizer plays a common backing beat that plays through both the user and the AI inputs. The backing beat provides the user with some rhythmic structure behind their input and the AI’s response is quantized so that it also plays in time with the backing beat. The rhythmic continuity makes the overall experience feel more structured."
 
         var demoTemplate = require("templates/quantizer.hbs");
         this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Quantizer", info: infoText})
+        this.element.innerHTML = demoTemplate({title: demoTitle})
         this.element.id = 'tutorial'
         container.appendChild(this.element)
+
+        document.getElementById("info-title").innerHTML = demoTitle
+        document.getElementById("info-body").innerHTML = infoText
 
         this.kickSampler = new Tone.Sampler('audio/drums/Kick15.wav', () => {
             this.kickSampler.volume.value = 1

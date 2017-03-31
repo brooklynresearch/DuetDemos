@@ -11,13 +11,17 @@ export class Matrix {
         this.sound.load()
         this.glow = new Glow(container)
         
-        var infoText = ""
-        
+        var demoTitle = "Matrix"
+        var infoText = "Matrix demo is based on visualizing musical expression in different formats.  Using a 2D matrix to help understand ai note playback in relation to user input.  With the matrix you can easily select non sequential notes together to get a much more interesting ai feedback both musically and visually.  Half notes are mapped out vertically, with each octave of the note mapped out horizontally.  All other functions are similar to default demo."
+
         var demoTemplate = require("templates/matrix.hbs");
         this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "", info: infoText});
+        this.element.innerHTML = demoTemplate({title: demoTitle});
         this.element.id = 'tutorial'
         container.appendChild(this.element)
+
+        document.getElementById("info-title").innerHTML = demoTitle
+        document.getElementById("info-body").innerHTML = infoText
     }
     start() {
         this.keyboard.activate()

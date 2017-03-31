@@ -15,12 +15,13 @@ export class Pentatonic extends events.EventEmitter{
         this.sound.load()
         this.glow = new Glow(container)
 
+        var demoTitle = "Pentatonic"
         var infoText =
         "Pentatonic demo is a test of trying to make the user and the AI’s playing always consonant with each other by limiting the output to notes solely within a single major pentatonic scale so that no note combination can sound dissonant. The demo achieves some of that, but the use of the existing keyboard format is somewhat confusing as it simply shifts notes that are not within the pentatonic scale to one that is."
 
         var demoTemplate = require("templates/pentatonic.hbs");
         this.element = document.createElement('div')
-        this.element.innerHTML = demoTemplate({title: "Pentatonic", info: infoText});
+        this.element.innerHTML = demoTemplate({title: demoTitle});
         this.element.id = 'tutorial'
         container.appendChild(this.element)
 
@@ -29,6 +30,9 @@ export class Pentatonic extends events.EventEmitter{
                            4,16,28,40,52,64,76,88,100,112,124,   // E
                            7,19,31,43,55,67,79,91,103,115,127,   // G
                            9,21,33,45,57,69,81,93,105,117,129];  // A
+
+        document.getElementById("info-title").innerHTML = demoTitle
+        document.getElementById("info-body").innerHTML = infoText
     }
 
     start() { // Start listening
